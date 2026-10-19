@@ -77,6 +77,16 @@ Game::Game()
 
 Game::~Game()
 {
+	for(Balloon* b : balloons) {
+		delete b;
+	}
+	for (Arrow* a : arrows) {
+		delete a;
+	}
+	for(Texture* t : textures) {
+		delete t;
+	}
+	delete bow;
 	// TODO: liberar la memoria reservada por la clase
 }
 

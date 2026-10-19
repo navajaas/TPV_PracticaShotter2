@@ -42,7 +42,6 @@ bool Bow::update(float delta) {
 		timeSinceLastShot -= delta;
 	}
 	if (velocity.getY() != 0.0f) {
-		std::cout << "Moviendo arco Y: " << velocity.getY() << " rectY: " << rect.getTopLeftCorner().getY() << " Delta:	 " << delta << std::endl;
 		rect.move(Vector2D(0.0f, velocity.getY() * speed * delta));
 	}
 	return true;
