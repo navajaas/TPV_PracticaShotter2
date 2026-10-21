@@ -17,6 +17,7 @@ private:
 	Game* game=nullptr;
 	Texture* textura=nullptr;
 	Rectangle rect;
+	Rectangle rectColision;
 	float speed = 300.0f; // Velocidad de movimiento de la flecha
 };
 #endif // ARROW_H

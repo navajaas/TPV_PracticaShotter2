@@ -13,5 +13,6 @@ void Arrow::render() const
 bool Arrow::update(float delta) {
 	// Actualiza la posición de la flecha
 	rect.move(Vector2D<>(speed * delta, 0.0f));
+	rectColision = Rectangle(rect.getTopLeftCorner(), rect.getWidth()-20, rect.getHeight());
 	return true;
 }

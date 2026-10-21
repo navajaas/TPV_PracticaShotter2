@@ -34,6 +34,14 @@ void Bow::handleEvents(const SDL_Event& event) {
 			break;
 		}
 	}
+	else if (event.type == SDL_EVENT_KEY_UP) {
+		switch (event.key.key) {
+		case SDLK_UP:
+		case SDLK_DOWN:
+			velocity.setY(0.0f); // Detener el movimiento vertical
+			break;
+		}
+	}
 	
 }
 

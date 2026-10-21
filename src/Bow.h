@@ -24,7 +24,7 @@ private:
 	Rectangle rect;
 	Vector2D<> velocity;
 	float speed = 200.0f; // Velocidad de movimiento del arco
-	float arrowsCoolDown = 0.8f; // Tiempo de espera entre disparos
+	float arrowsCoolDown = 0.2f; // Tiempo de espera entre disparos
 	float timeSinceLastShot = 0.0f; // Tiempo transcurrido desde el último disparo
 	bool arrowArmad= false;
 	Arrow* arrow = nullptr; // Puntero a la flecha asociada al arco
