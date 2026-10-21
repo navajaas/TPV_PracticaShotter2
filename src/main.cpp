@@ -9,9 +9,13 @@
 
 int main(int argc, char* argv[])
 {
-	Game().run();
-
-	// TODO: manejar excepciones
-
+    try {
+        Game game;
+        game.run();
+    }
+    catch (const std::string& error) {
+        std::cerr << error << '\n';
+        return 1;
+    }
 	return 0;
 }

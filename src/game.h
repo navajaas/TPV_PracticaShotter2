@@ -4,8 +4,10 @@
 #include <SDL3/SDL.h>
 #include <array>
 #include <istream>
+#include <string>
 #include <vector>
 #include "rectangle.h"
+#include <random>
 
 // Declaraciones anticipadas
 class Texture;
@@ -31,13 +33,22 @@ public:
 		BOW = 0,
 		ARROW,
 		BALLOON,
+		BACKGROUND,
 		NUM_TEXTURES
+	};
+
+	enum LevelName
+	{
+		LEVEL1 = 0,
+		LEVEL2,
+		NUM_LEVELS
 	};
 
 private:
 	SDL_Window* window;
 	SDL_Renderer* renderer;
 	std::array<Texture*, NUM_TEXTURES> textures;
+	std::array<std::string, NUM_LEVELS> levels;
 
 	void render() const;
 	void update(float delta);
@@ -46,10 +57,13 @@ private:
 	bool exit;
 	void spawnBalloon();
 	float spawnTimer = 0.0f; // Temporizador para el spawn de globos
-	float spawnInterval = 1.5f; // Intervalo de tiempo entre spawns de
+	float spawnInterval = 1.5; // Intervalo de tiempo entre spawns de
+	int _arrows;
+	std::mt19937_64 randomGenerator{ std::random_device{}() };
+
 	// Elemento del juego
 	// TODO: añadir atributos para los objetos del juego
-	Bow* bow=nullptr;
+	Bow* bow = nullptr;
 	std::vector<class Arrow*> arrows; // Vector para almacenar las flechas disparadas
 	std::vector<class Balloon*> balloons; // Vector para almacenar los globos
 public:
@@ -61,11 +75,10 @@ public:
 
 	// Ejecuta el bucle principal del juego
 	void run();
-	void addArrow(Arrow* arrow) {
-		arrows.push_back(arrow);
-	}
+	void addArrow(Arrow* arrow);
 	// Comprueba si hay algún objeto colocado en ese rectángulo
-	// bool checkCollision(const Rectangle& rect);
+	bool checkCollision(const Rectangle& rect);
+	void loadMap(const std::string& file);
 };
 
 inline Texture*

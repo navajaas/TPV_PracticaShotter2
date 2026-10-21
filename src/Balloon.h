@@ -12,7 +12,7 @@ public:
 	
 	void render() const;
 	bool update(float delta);
-	//bool hit(const Rectangle& rect);
+	bool hit(const Rectangle& rect);
 private:
 	Game* game=nullptr;
 	Rectangle rect;
@@ -20,5 +20,6 @@ private:
 
 	float speed; // Velocidad de movimiento del globo
 	int color;
+	bool alive;
 };
 #endif // BALLOON_H
