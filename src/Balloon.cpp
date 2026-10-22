@@ -1,35 +1,57 @@
 #include "Balloon.h"
+
+static constexpr float FRAME_DURATION = 0.08f;
+static constexpr int EXPLOSION_FRAMES = 6;
+
 Balloon::Balloon(Game* game, Rectangle rect, Texture* tex, float speed, int color)
-	: game(game), rect(rect), textura(tex), speed(speed), color(color), alive(true)
+	: game(game), rect(rect), textura(tex), speed(speed), color(color)
 {
 }
 
 void Balloon::render() const
 {
-	if (textura && alive)
+	if (textura)
 	{
-		textura->renderFrame(rect.to_sdl(), color, 0);
+		int frame = exploding ? explosionFrame : 0;
+		textura->renderFrame(rect.to_sdl(), color, frame);
 	}
 }
 bool Balloon::update(float delta) {
-	// Actualiza la posición del globo
-	rect.move(Vector2D<>(0.0f, -speed * delta));
+    if (exploding) {
+        animationTimer += delta;
 
-	// Si sale de la pantalla por arriba, se destruye
-	if (rect.getTopLeftCorner().getY() + rect.getHeight() < 0 || !alive) {
-		return false;
-	}
+        if (animationTimer >= FRAME_DURATION) {
+            animationTimer -= FRAME_DURATION;
+            explosionFrame++;
 
-	return true;
+            if (explosionFrame >= EXPLOSION_FRAMES) {
+                return false; 
+            }
+        }
+
+        return true; 
+    }
+
+    // Si está vivo, continúa subiendo
+    rect.move(Vector2D<>(0.0f, -speed * delta));
+
+    // Si sale de la pantalla, se elimina
+    if (rect.getTopLeftCorner().getY() + rect.getHeight() < 0) {
+        return false;
+    }
+
+    return true;
 }
+
 
 bool Balloon::hit(const Rectangle& other)
 {
-	if (alive && rect.hasIntersection(other))
-	{
-		alive = false;
-		return true;
-	}
+    if (!exploding && rect.hasIntersection(other)) {
+        exploding = true;
+        explosionFrame = 0;
+        animationTimer = 0.0f;
+        return true;
+    }
 
-	return false;
+    return false;
 }

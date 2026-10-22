@@ -20,6 +20,9 @@ private:
 
 	float speed; // Velocidad de movimiento del globo
 	int color;
-	bool alive;
+	bool exploding = false;
+
+	int explosionFrame = 0;
+	float animationTimer = 0.0f;
 };
 #endif // BALLOON_H
