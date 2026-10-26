@@ -1,4 +1,8 @@
-﻿  game.cpp
+﻿  Arrow.cpp
+  Bow.cpp
+  game.cpp
+  main.cpp
 C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\game.cpp(283,14): warning C4244: 'inicializando': conversión de 'float' a 'int'; posible pérdida de datos
 C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\game.cpp(286,19): warning C4244: 'inicializando': conversión de 'int' a 'float'; posible pérdida de datos
+  LINK : no se encontró C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\bin\ProyectoSDLDebug.exe o no lo generó el último vínculo incremental; ejecutando vínculo completo
   ProyectoSDL.vcxproj -> C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\bin\ProyectoSDLDebug.exe

@@ -54,7 +54,14 @@ bool Bow::update(float delta) {
 		timeSinceLastShot -= delta;
 	}
 	if (velocity.getY() != 0.0f) {
-		rect.move(Vector2D(0.0f, velocity.getY() * BOW_SPEED * delta));
+		float nextY = rect.getTopLeftCorner().getY() + velocity.getY() * BOW_SPEED * delta;
+
+		float minY = 0.0f;
+		float maxY = game->WINDOW_HEIGHT - rect.getHeight();
+
+		if (nextY >= minY && nextY <= maxY) {
+			rect.move(Vector2D(0.0f, velocity.getY() * BOW_SPEED * delta));
+		}
 	}
 	return true;
 }
