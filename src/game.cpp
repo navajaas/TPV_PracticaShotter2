@@ -10,6 +10,7 @@
 #include "texture.h"
 #include "Bow.h"
 #include "Balloon.h"
+#include "InfoBar.h"
 
 using namespace std;
 
@@ -72,7 +73,7 @@ Game::Game()
 			delete t;
 		}
 		delete bow;
-
+		delete infoBar;
 		SDL_DestroyRenderer(renderer);
 		SDL_DestroyWindow(window);
 		SDL_Quit();
@@ -103,7 +104,7 @@ Game::~Game()
 		delete t;
 	}
 	delete bow;
-
+	delete infoBar;
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 	SDL_Quit();
@@ -126,7 +127,7 @@ Game::render() const
 		arrow->render();
 	}
 
-
+	infoBar->render();
 	SDL_RenderPresent(renderer);
 }
 
@@ -183,6 +184,7 @@ void Game::addArrow(Arrow* arrow)
 	if (_arrows > 0) {
 		std::cout << "Arrows left: " << _arrows << endl;
 		_arrows--;
+		infoBar->updateArrows(_arrows);
 		arrows.push_back(arrow);
 	}
 	
@@ -273,6 +275,8 @@ void Game::loadMap(const std::string& filename)
 	targetScore = newTargetScore;
 	spawnInterval = newSpawnInterval;
 	balloonPoints = newBalloonPoints;
+	infoBar=new InfoBar(this, Rectangle(Point2D<>(50, 30), 60, 15),_arrows, getTexture(ARROW));
+
 }
 
 
