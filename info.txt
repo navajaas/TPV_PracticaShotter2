@@ -2,3 +2,9 @@ Miembros del grupo (G01):
 
 - Isabel Serrano Martín
 - Blanca Navajas González
+
+Funcionalidades opcionales:
+
+- El juego lee configuraciones de puntos por globo, meta de puntos, número de flechas y delay entre creación de globos.
+- El juego busca en el archivo el siguiente nivel, y si no existe y el jugador ha ganado, salta un mensaje por consola.
+- Clase InfoBar añadida
