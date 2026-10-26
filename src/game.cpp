@@ -10,7 +10,6 @@
 #include "texture.h"
 #include "Bow.h"
 #include "Balloon.h"
-#include "InfoBar.h"
 
 using namespace std;
 
@@ -104,7 +103,6 @@ Game::~Game()
 		delete t;
 	}
 	delete bow;
-	delete infoBar;
 
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
@@ -119,7 +117,7 @@ Game::render() const
 	getTexture(BACKGROUND)->render();
 
 	if(bow) bow->render();
-	if (infoBar) infoBar->render();
+
 	for (const auto& balloon : balloons) {
 		balloon->render();
 	}
@@ -127,6 +125,7 @@ Game::render() const
 	for (const auto& arrow : arrows) {
 		arrow->render();
 	}
+
 
 	SDL_RenderPresent(renderer);
 }
@@ -141,7 +140,6 @@ Game::update(float delta)
 	}
 	
 	if (bow) bow->update(delta);
-	
 
 	for (const auto& arrow : arrows) {
 		arrow->update(delta);
@@ -185,7 +183,6 @@ void Game::addArrow(Arrow* arrow)
 	if (_arrows > 0) {
 		std::cout << "Arrows left: " << _arrows << endl;
 		_arrows--;
-		if (infoBar) infoBar->updateArrows(_arrows);
 		arrows.push_back(arrow);
 	}
 	
@@ -270,7 +267,7 @@ void Game::loadMap(const std::string& filename)
 
 	if (newArrows < 0)
 		throw std::string(
-	infoBar = new InfoBar(this, Rectangle(Point2D<> (50,550), 60, 15), _arrows, getTexture(ARROW));
+			"El nivel no especifica una cantidad valida de flechas");
 
 	_arrows = newArrows;
 	targetScore = newTargetScore;
