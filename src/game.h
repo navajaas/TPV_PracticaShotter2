@@ -13,7 +13,6 @@
 class Texture;
 class Bow;
 class Balloon;
-class InfoBar;
 
 /**
  * Clase principal del juego.
@@ -76,7 +75,6 @@ private:
 	Bow* bow = nullptr;
 	std::vector<class Arrow*> arrows; // Vector para almacenar las flechas disparadas
 	std::vector<class Balloon*> balloons; // Vector para almacenar los globos
-	InfoBar* infoBar = nullptr;
 public:
 	Game();
 	~Game();
