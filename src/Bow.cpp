@@ -1,4 +1,8 @@
 #include "Bow.h"
+
+constexpr float BOW_SPEED = 200.0f; // Velocidad de movimiento del arco
+constexpr float SHOOT_CD = 0.2f; // Tiempo de espera entre disparos
+
 Bow::Bow(Game* game, Rectangle rect, Texture* tex)
 	: game(game), rect(rect), textura(tex), arrowArmad(false), timeSinceLastShot(0.0f)
 {
@@ -28,7 +32,7 @@ void Bow::handleEvents(const SDL_Event& event) {
 				else {
 					shootArrow(); // Disparar la flecha
 				}
-				timeSinceLastShot=arrowsCoolDown;
+				timeSinceLastShot = SHOOT_CD;
 			}
 			
 			break;
@@ -50,7 +54,7 @@ bool Bow::update(float delta) {
 		timeSinceLastShot -= delta;
 	}
 	if (velocity.getY() != 0.0f) {
-		rect.move(Vector2D(0.0f, velocity.getY() * speed * delta));
+		rect.move(Vector2D(0.0f, velocity.getY() * BOW_SPEED * delta));
 	}
 	return true;
 }

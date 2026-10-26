@@ -3,4 +3,4 @@ bgcolor 0 170 85
 arrows 10
 baldelay 1000
 balpoints 10
-goal 100
+goal 50

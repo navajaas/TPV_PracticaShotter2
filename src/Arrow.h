@@ -1,11 +1,13 @@
 #ifndef ARROW_H
 #define ARROW_H
 
-#include "Vector2D.h"
+#include "vector2D.h"
 #include "rectangle.h"
 #include "game.h"
 #include "texture.h"
+
 class Game;
+
 class Arrow
 {
 public:
@@ -13,12 +15,13 @@ public:
 	
 	void render() const;
 	bool update(float delta);
+
 private:
-	Game* game=nullptr;
-	Texture* textura=nullptr;
+
+	Game* game = nullptr;
 	Rectangle rect;
+	Texture* textura = nullptr;
 	Rectangle rectColision;
-	float speed = 300.0f; // Velocidad de movimiento de la flecha
 };
 #endif // ARROW_H
 

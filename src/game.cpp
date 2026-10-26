@@ -17,8 +17,8 @@ using namespace std;
 constexpr const char* const WINDOW_TITLE = "Bow & Arrow 1.0";
 constexpr const char* IMAGE_ROOT = "../assets/images/";
 constexpr const char* LEVEL_ROOT = "../assets/levels/";
-constexpr float width = 60.0f;
-constexpr float height = 60.0f;
+constexpr float BALLOON_SIZE = 60.0f;
+constexpr float BOW_SIZE = 64.0f;
 
 // Estructura para especificar las texturas que hay que
 // cargar y el tamaño de su matriz de frames
@@ -36,10 +36,6 @@ constexpr array<TextureSpec, Game::NUM_TEXTURES> textureList{
 	{"background1.png"}
 };
 
-constexpr array<const char*, Game::NUM_LEVELS> levelList{
-	"1.txt",
-	"2.txt"
-};
 
 Game::Game()
   : exit(false)
@@ -62,10 +58,6 @@ Game::Game()
 		for (size_t i = 0; i < textures.size(); i++) {
 			auto [name, nrows, ncols] = textureList[i];
 			textures[i] = new Texture(renderer, (imgRoot + name).c_str(), nrows, ncols);
-		}
-		for (size_t i = 0; i < levels.size(); i++) {
-			std::string name = levelList[i];
-			levels[i] = lvlRoot + name;
 		}
 	}
 	catch (...) {
@@ -91,13 +83,11 @@ Game::Game()
 	// Configura que se pueden utilizar capas translúcidas
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 
-	Point2D position(50.0f, 200.0f);  
-	float width = 64.0f;            
-	float height = 64.0f;             
+	Point2D position(50.0f, 200.0f);              
 
-	bow = new Bow(this, Rectangle(position, width, height), getTexture(BOW));
+	bow = new Bow(this, Rectangle(position, BOW_SIZE, BOW_SIZE), getTexture(BOW));
 
-	loadMap(levels[0]);
+	loadMap(LEVEL_ROOT + std::string("1.txt"));
 	
 }
 
@@ -136,6 +126,7 @@ Game::render() const
 		arrow->render();
 	}
 
+
 	SDL_RenderPresent(renderer);
 }
 
@@ -165,7 +156,10 @@ Game::update(float delta)
 		
 	}
 
-	if (_arrows <= 0) exit = true;
+	if (_arrows <= 0 && !gameWon) {
+		exit = true;
+		std::cout << "Fin de la partida. No has completado el nivel.\n";
+	}
 }
 
 void
@@ -213,8 +207,10 @@ bool Game::checkCollision(const Rectangle& rect)
 {
 	for (Balloon* b : balloons)
 	{
-		if (b->hit(rect))
+		if (b->hit(rect)) {
+			addScore(balloonPoints);
 			return true;
+		}
 	}
 
 	return false;
@@ -227,6 +223,12 @@ void Game::loadMap(const std::string& filename)
 	if (!file.is_open())
 		throw std::string("Error al abrirse el archivo: ") + filename;
 
+	// Valores por defecto para este nivel.
+	int newArrows = -1;
+	int newTargetScore = 10;
+	float newSpawnInterval = 1.5f;
+	int newBalloonPoints = 1;
+
 	std::string line;
 
 	while (std::getline(file, line)) {
@@ -237,22 +239,40 @@ void Game::loadMap(const std::string& filename)
 		std::string key;
 		iss >> key;
 
-		if (key == "arrows") { 
-
-			if (!(iss >> _arrows) || _arrows < 0)
-				throw std::string("Error leyendo la cantidad de flechas");
+		if (key == "arrows") {
+			if (!(iss >> newArrows) || newArrows < 0)
+				throw std::string(
+					"Error leyendo la cantidad de flechas");
 		}
 		else if (key == "baldelay") {
 			int milliseconds;
 
 			if (!(iss >> milliseconds) || milliseconds <= 0)
-				throw std::string("Error leyendo el intervalo de spawn");
+				throw std::string(
+					"Error leyendo el intervalo de spawn");
 
-			spawnInterval = milliseconds / 1000.0f;
+			newSpawnInterval = milliseconds / 1000.0f;
+		}
+		else if (key == "goal") {
+			if (!(iss >> newTargetScore) || newTargetScore <= 0)
+				throw std::string(
+					"Error leyendo la puntuacion objetivo");
+		}
+		else if (key == "balpoints") {
+			if (!(iss >> newBalloonPoints) || newBalloonPoints <= 0)
+				throw std::string(
+					"Error leyendo el número de puntos que aporta cada globo explotado");
 		}
 	}
 
-	
+	if (newArrows < 0)
+		throw std::string(
+			"El nivel no especifica una cantidad valida de flechas");
+
+	_arrows = newArrows;
+	targetScore = newTargetScore;
+	spawnInterval = newSpawnInterval;
+	balloonPoints = newBalloonPoints;
 }
 
 
@@ -260,7 +280,7 @@ void Game::spawnBalloon()
 {
 
     int minX = WINDOW_WIDTH / 2;
-    int maxX = WINDOW_WIDTH - width;
+    int maxX = WINDOW_WIDTH - BALLOON_SIZE;
 
     std::uniform_int_distribution<int> xDistribution(minX, maxX);
     float randomX = xDistribution(randomGenerator);
@@ -272,7 +292,66 @@ void Game::spawnBalloon()
     float randomSpeed = std::uniform_real_distribution<float>(50.0f, 150.0f)(randomGenerator);
 
     balloons.push_back(
-        new Balloon(this, { { randomX, startY }, width, height }, getTexture(BALLOON),
+        new Balloon({ { randomX, startY }, BALLOON_SIZE, BALLOON_SIZE }, getTexture(BALLOON),
                     randomSpeed, randomColorIndex)
     );
+}
+
+void Game::addScore(int points)
+{
+	if (points <= 0 || gameWon || exit)
+		return;
+
+	score += points;
+
+	std::cout << "Puntuacion: " << score
+		<< " / " << targetScore << '\n';
+
+	checkLevelProgress();
+}
+
+void Game::checkLevelProgress()
+{
+	if (score < targetScore)
+		return;
+
+	// El siguiente nivel debe tener un número consecutivo.
+	const int nextLevel = currentLevel + 1;
+
+	const std::string nextFile =
+		std::string(LEVEL_ROOT) +
+		std::to_string(nextLevel) + ".txt";
+
+	std::ifstream file(nextFile);
+
+	if (!file.is_open()) {
+		gameWon = true;
+		exit = true;
+
+		std::cout << "¡Enhorabuena! Has superado todos los niveles.\n";
+		return;
+	}
+
+	file.close();
+
+	currentLevel = nextLevel;
+	score = 0;
+
+	// Elimina los objetos que quedan del nivel anterior.
+	for (Balloon* balloon : balloons)
+		delete balloon;
+
+	balloons.clear();
+
+	for (Arrow* arrow : arrows)
+		delete arrow;
+
+	arrows.clear();
+
+	spawnTimer = 0.0f;
+
+	// Carga la configuración del nuevo nivel.
+	loadMap(nextFile);
+
+	std::cout << "¡Nivel " << currentLevel << "!\n";
 }

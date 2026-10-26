@@ -48,7 +48,16 @@ private:
 	SDL_Window* window;
 	SDL_Renderer* renderer;
 	std::array<Texture*, NUM_TEXTURES> textures;
-	std::array<std::string, NUM_LEVELS> levels;
+	
+	// Sistema de niveles y puntuación
+	int currentLevel = 1;
+	int score = 0;
+	int targetScore = 10;  // Puntuación necesaria para pasar de nivel
+	int balloonPoints = 1;
+
+	bool gameWon = false;
+
+	void checkLevelProgress();
 
 	void render() const;
 	void update(float delta);
@@ -79,6 +88,7 @@ public:
 	// Comprueba si hay algún objeto colocado en ese rectángulo
 	bool checkCollision(const Rectangle& rect);
 	void loadMap(const std::string& file);
+	void addScore(int points);
 };
 
 inline Texture*

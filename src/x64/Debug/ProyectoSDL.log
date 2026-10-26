@@ -1,2 +1,4 @@
-﻿  Balloon.cpp
+﻿  game.cpp
+C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\game.cpp(283,14): warning C4244: 'inicializando': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\game.cpp(286,19): warning C4244: 'inicializando': conversión de 'int' a 'float'; posible pérdida de datos
   ProyectoSDL.vcxproj -> C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\bin\ProyectoSDLDebug.exe

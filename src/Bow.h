@@ -1,7 +1,7 @@
 #ifndef BOW_H
 #define BOW_H
 
-#include "Vector2D.h"
+#include "vector2D.h"
 #include "rectangle.h"
 #include <SDL3/SDL.h>
 #include "texture.h"
@@ -9,6 +9,7 @@
 
 class Game;
 class Arrow;
+
 class Bow
 {
 public:
@@ -19,14 +20,15 @@ public:
 	void handleEvents(const SDL_Event& event);
 	void shootArrow();
 private:
-	Game* game=nullptr;
-	Texture* textura=nullptr;
+	Game* game = nullptr;
 	Rectangle rect;
+	Texture* textura = nullptr;
 	Vector2D<> velocity;
-	float speed = 200.0f; // Velocidad de movimiento del arco
-	float arrowsCoolDown = 0.2f; // Tiempo de espera entre disparos
+
+
+	bool arrowArmad = false;
 	float timeSinceLastShot = 0.0f; // Tiempo transcurrido desde el último disparo
-	bool arrowArmad= false;
 	Arrow* arrow = nullptr; // Puntero a la flecha asociada al arco
+
 };
 #endif // BOW_H

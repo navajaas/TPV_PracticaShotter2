@@ -1,10 +1,11 @@
 #include "Balloon.h"
 
-static constexpr float FRAME_DURATION = 0.08f;
-static constexpr int EXPLOSION_FRAMES = 6;
+constexpr float FRAME_DURATION = 0.08f;
+constexpr int EXPLOSION_FRAMES = 6;
 
-Balloon::Balloon(Game* game, Rectangle rect, Texture* tex, float speed, int color)
-	: game(game), rect(rect), textura(tex), speed(speed), color(color)
+
+Balloon::Balloon(Rectangle rect, Texture* tex, float speed, int color)
+	: rect(rect), textura(tex), speed(speed), color(color)
 {
 }
 
