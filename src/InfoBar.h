@@ -1,15 +1,16 @@
-#include "Vector2D.h"
+#include "vector2D.h"
 #include "rectangle.h"
 #include "game.h"
 #include "texture.h"
 class Game;
 class InfoBar {
 public: 
-	InfoBar(Game* game, Rectangle rect, int arrowsLeft, Texture* textura) :
-		game(game),rect(rect),arrowsLeft(arrowsLeft), textura (textura)
+	InfoBar(Rectangle rect, int arrowsLeft, Texture* textura) :
+		rect(rect),arrowsLeft(arrowsLeft), textura (textura)
 	{
 
 	}
+
 	void render() const{
 		if (textura) {
 			// Ancho del rectángulo base de cada flecha (como esta girada se usa la altura)
@@ -34,10 +35,9 @@ public:
 		arrowsLeft = arrows;
 	}
 private:
-	Game* game = nullptr;
-	Texture* textura = nullptr;
 	Rectangle rect;
 	int arrowsLeft;
+	Texture* textura = nullptr;
 };
 
 

@@ -87,6 +87,7 @@ Game::Game()
 	Point2D position(50.0f, 200.0f);              
 
 	bow = new Bow(this, Rectangle(position, BOW_SIZE, BOW_SIZE), getTexture(BOW));
+	infoBar = new InfoBar(Rectangle(Point2D<>(50, 30), 60, 15), _arrows, getTexture(ARROW));
 
 	loadMap(LEVEL_ROOT + std::string("1.txt"));
 	
@@ -275,7 +276,7 @@ void Game::loadMap(const std::string& filename)
 	targetScore = newTargetScore;
 	spawnInterval = newSpawnInterval;
 	balloonPoints = newBalloonPoints;
-	infoBar=new InfoBar(this, Rectangle(Point2D<>(50, 30), 60, 15),_arrows, getTexture(ARROW));
+	
 
 }
 
