@@ -11,6 +11,7 @@
 #include "Bow.h"
 #include "Balloon.h"
 #include "InfoBar.h"
+#include "SceneObject.h"
 
 using namespace std;
 
@@ -63,17 +64,16 @@ Game::Game()
 	}
 	catch (...) {
 
-		for (Balloon* b : balloons) {
-			delete b;
-		}
-		for (Arrow* a : arrows) {
-			delete a;
-		}
 		for (Texture* t : textures) {
 			delete t;
 		}
-		delete bow;
+
+		for (SceneObject* o : objects) {
+			delete o;
+		}
+
 		delete infoBar;
+
 		SDL_DestroyRenderer(renderer);
 		SDL_DestroyWindow(window);
 		SDL_Quit();
@@ -86,8 +86,8 @@ Game::Game()
 
 	Point2D position(50.0f, 200.0f);              
 
-	bow = new Bow(this, Rectangle(position, BOW_SIZE, BOW_SIZE), getTexture(BOW));
-	infoBar = new InfoBar(Rectangle(Point2D<>(50, 30), 60, 15), _arrows, getTexture(ARROW));
+	addObject(new Bow(this, Rectangle(position, BOW_SIZE, BOW_SIZE), getTexture(BOW)));
+	//infoBar = new InfoBar(Rectangle(Point2D<>(50, 30), 60, 15), _arrows, getTexture(ARROW));
 
 	loadMap(LEVEL_ROOT + std::string("1.txt"));
 	
@@ -95,16 +95,13 @@ Game::Game()
 
 Game::~Game()
 {
-	for(Balloon* b : balloons) {
-		delete b;
+	for (SceneObject* o : objects) {
+		delete o;
 	}
-	for (Arrow* a : arrows) {
-		delete a;
-	}
+
 	for(Texture* t : textures) {
 		delete t;
 	}
-	delete bow;
 	delete infoBar;
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
@@ -118,50 +115,40 @@ Game::render() const
 
 	getTexture(BACKGROUND)->render();
 
-	if(bow) bow->render();
-
-	for (const auto& balloon : balloons) {
-		balloon->render();
+	for (SceneObject* o : objects) {
+		o->render();
 	}
 
-	for (const auto& arrow : arrows) {
-		arrow->render();
-	}
-
-	infoBar->render();
+	//infoBar->render();
 	SDL_RenderPresent(renderer);
 }
 
-void
-Game::update(float delta)
+void Game::update(float delta)
 {
 	spawnTimer += delta;
-	if (spawnTimer >= spawnInterval) {
+
+	if (spawnTimer >= spawnInterval)
+	{
 		spawnBalloon();
 		spawnTimer = 0.0f;
 	}
-	
-	if (bow) bow->update(delta);
 
-	for (const auto& arrow : arrows) {
-		arrow->update(delta);
-	}
-
-	for (auto it = balloons.begin(); it != balloons.end(); )
+	for (auto it = objects.begin(); it != objects.end(); )
 	{
-		if (!(*it)->update(delta))
+		SceneObject* obj = *it;
+
+		if (!obj->update(delta))
 		{
-			delete* it;
-			it = balloons.erase(it);
+			delete obj;
+			it = objects.erase(it);
 		}
-		else ++it;
-		
+		else
+		{
+			++it;
+		}
 	}
 
-	if (_arrows <= 0 && !gameWon) {
-		exit = true;
-		std::cout << "Fin de la partida. No has completado el nivel.\n";
-	}
+	processCallbacks();
 }
 
 void
@@ -180,37 +167,27 @@ Game::run()
 	}
 }
 
-void Game::addArrow(Arrow* arrow)
-{
-	if (_arrows > 0) {
-		std::cout << "Arrows left: " << _arrows << endl;
-		_arrows--;
-		infoBar->updateArrows(_arrows);
-		arrows.push_back(arrow);
-	}
-	
-}
-
-void
-Game::handleEvents()
+void Game::handleEvents()
 {
 	SDL_Event event;
 
-	// Only quit is handled directly, everything else is delegated
 	while (SDL_PollEvent(&event)) {
 		if (event.type == SDL_EVENT_QUIT)
 			exit = true;
 
-		bow->handleEvents(event);
-		
+		const size_t count = objects.size();
+
+		for (size_t i = 0; i < count; ++i) {
+			objects[i]->handleEvents(event);
+		}
 	}
 }
 
 bool Game::checkCollision(const Rectangle& rect)
 {
-	for (Balloon* b : balloons)
+	for (SceneObject* o : objects)
 	{
-		if (b->hit(rect)) {
+		if (o->hit(rect)) {
 			addScore(balloonPoints);
 			return true;
 		}
@@ -294,12 +271,13 @@ void Game::spawnBalloon()
     int numColors = getTexture(BALLOON)->getNumRows();
 
     int randomColorIndex = std::uniform_int_distribution<int>(0, numColors - 1)(randomGenerator);
-    float randomSpeed = std::uniform_real_distribution<float>(50.0f, 150.0f)(randomGenerator);
+	float randomSpeedY = std::uniform_real_distribution<float>(50.0f, 150.0f)(randomGenerator);
 
-    balloons.push_back(
-        new Balloon({ { randomX, startY }, BALLOON_SIZE, BALLOON_SIZE }, getTexture(BALLOON),
-                    randomSpeed, randomColorIndex)
+    objects.push_back(
+        new Balloon(this,{ { randomX, startY }, BALLOON_SIZE, BALLOON_SIZE }, getTexture(BALLOON),
+			{0,-randomSpeedY}, randomColorIndex)
     );
+
 }
 
 void Game::addScore(int points)
@@ -313,6 +291,11 @@ void Game::addScore(int points)
 		<< " / " << targetScore << '\n';
 
 	checkLevelProgress();
+}
+
+void Game::addObject(SceneObject* object)
+{
+	objects.push_back(object);
 }
 
 void Game::checkLevelProgress()
@@ -342,16 +325,11 @@ void Game::checkLevelProgress()
 	currentLevel = nextLevel;
 	score = 0;
 
-	// Elimina los objetos que quedan del nivel anterior.
-	for (Balloon* balloon : balloons)
-		delete balloon;
+	for (SceneObject* o : objects) {
+		delete o;
+	}
 
-	balloons.clear();
-
-	for (Arrow* arrow : arrows)
-		delete arrow;
-
-	arrows.clear();
+	objects.clear();
 
 	spawnTimer = 0.0f;
 
@@ -359,4 +337,25 @@ void Game::checkLevelProgress()
 	loadMap(nextFile);
 
 	std::cout << "¡Nivel " << currentLevel << "!\n";
+}
+
+void Game::updateArrows() {
+	_arrows--;
+}
+
+void Game::addCallback(std::function<void()> callback)
+{
+	_callbacks.push_back(std::move(callback));
+}
+
+void Game::processCallbacks()
+{
+	while (!_callbacks.empty())
+	{
+		auto pending = std::move(_callbacks);
+		_callbacks.clear();
+
+		for (auto& callback : pending)
+			callback();
+	}
 }

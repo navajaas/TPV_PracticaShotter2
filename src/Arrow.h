@@ -5,22 +5,20 @@
 #include "rectangle.h"
 #include "game.h"
 #include "texture.h"
+#include "MobileObject.h"
 
 class Game;
 
-class Arrow
+class Arrow : public MobileObject
 {
 public:
 	Arrow(Game* game, Rectangle rect, Texture* textura);
 	
-	void render() const;
-	bool update(float delta);
+	void render() const override;
+	bool update(float delta) override;
+	bool hit(const Rectangle&) override { return false; }
 
 private:
-
-	Game* game = nullptr;
-	Rectangle rect;
-	Texture* textura = nullptr;
 	Rectangle rectColision;
 };
 #endif // ARROW_H

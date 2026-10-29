@@ -6,25 +6,25 @@
 #include <SDL3/SDL.h>
 #include "texture.h"
 #include "Arrow.h"
+#include "SceneObject.h"
 
 class Game;
 class Arrow;
 
-class Bow
+class Bow : public SceneObject
 {
 public:
 	Bow(Game* game, Rectangle rect, Texture* textura);
 	
-	void render() const;
-	bool update(float delta);
-	void handleEvents(const SDL_Event& event);
-	void shootArrow();
-private:
-	Game* game = nullptr;
-	Rectangle rect;
-	Texture* textura = nullptr;
-	Vector2D<> velocity;
+	void render() const override;
+	bool update(float delta) override;
 
+	void handleEvents(const SDL_Event& event) override;
+	void shootArrow();
+	bool hit(const Rectangle&) override { return false; }
+
+private:
+	Vector2D<> velocity;
 
 	bool arrowArmad = false;
 	float timeSinceLastShot = 0.0f; // Tiempo transcurrido desde el último disparo

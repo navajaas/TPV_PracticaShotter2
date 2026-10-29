@@ -1,17 +1,19 @@
 #include "Bow.h"
+#include "MobileObject.h"
 
 constexpr float BOW_SPEED = 200.0f; // Velocidad de movimiento del arco
 constexpr float SHOOT_CD = 0.2f; // Tiempo de espera entre disparos
 
 Bow::Bow(Game* game, Rectangle rect, Texture* tex)
-	: game(game), rect(rect), textura(tex), arrowArmad(false), timeSinceLastShot(0.0f)
+	: SceneObject(game,rect,tex), arrowArmad(false), timeSinceLastShot(0.0f)
 {
 }
+
 void Bow::render() const
 {
-	if (textura)
+	if (texture)
 	{
-		textura->renderFrame(rect.to_sdl(), 0, arrowArmad ? 0 : 1);
+		texture->renderFrame(rect.to_sdl(), 0, arrowArmad ? 0 : 1);
 	}
 }
 
@@ -71,6 +73,7 @@ void Bow::shootArrow() {
 		Point2D<> arrowPosition(rect.getTopLeftCorner().getX() + rect.getWidth(), rect.getTopLeftCorner().getY() + rect.getHeight() / 2-10);
 		arrow = new Arrow(game, Rectangle(arrowPosition, 60, 15), game->getTexture(Game::ARROW)); 
 		arrowArmad = false; // Resetear el estado del arco
-		game->addArrow(arrow); // Agregar la flecha al juego
+		game->updateArrows();
+		game->addObject(arrow); // Agregar la flecha al juego
 	}
 }

@@ -2,7 +2,9 @@
 #include "rectangle.h"
 #include "game.h"
 #include "texture.h"
+
 class Game;
+
 class InfoBar {
 public: 
 	InfoBar(Rectangle rect, int arrowsLeft, Texture* textura) :

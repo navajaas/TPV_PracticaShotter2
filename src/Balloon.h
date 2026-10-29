@@ -4,23 +4,20 @@
 #include "vector2D.h"
 #include "rectangle.h"
 #include "texture.h"
+#include "MobileObject.h"
 
 class Game;
 
-class Balloon
+class Balloon : public MobileObject
 {
 public:
-	Balloon(Rectangle rect, Texture* textura, float speed, int color);
+	Balloon(Game*,Rectangle, Texture*, Vector2D<float>, int);
 	
-	void render() const;
-	bool update(float delta);
-	bool hit(const Rectangle& rect);
+	void render() const override;
+	bool update(float delta) override;
+	bool hit(const Rectangle& rect) override;
+
 private:
-
-	Rectangle rect;
-	Texture* textura=nullptr;
-
-	float speed; // Velocidad de movimiento del globo
 	int color;
 	bool exploding = false;
 

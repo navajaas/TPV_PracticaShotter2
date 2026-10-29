@@ -1,7 +1,2 @@
-﻿  game.cpp
-C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\InfoBar.h(17,19): warning C4244: 'inicializando': conversión de 'Rectangle::scalar_t' a 'int'; posible pérdida de datos
-  (compilando archivo de origen "game.cpp")
-  
-C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\game.cpp(290,14): warning C4244: 'inicializando': conversión de 'float' a 'int'; posible pérdida de datos
-C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\game.cpp(293,19): warning C4244: 'inicializando': conversión de 'int' a 'float'; posible pérdida de datos
+﻿  Bow.cpp
   ProyectoSDL.vcxproj -> C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\bin\ProyectoSDLDebug.exe

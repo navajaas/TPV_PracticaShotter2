@@ -8,18 +8,21 @@
 #include <vector>
 #include "rectangle.h"
 #include <random>
+#include <functional>
 
 // Declaraciones anticipadas
 class Texture;
 class Bow;
 class Balloon;
 class InfoBar;
+class SceneObject;
 
 /**
  * Clase principal del juego.
  */
 class Game
 {
+	using callback = std::function<void()>;
 public:
 	// Número de actualizaciones por segundo
 	static constexpr int FRAME_RATE = 30;
@@ -36,13 +39,6 @@ public:
 		BALLOON,
 		BACKGROUND,
 		NUM_TEXTURES
-	};
-
-	enum LevelName
-	{
-		LEVEL1 = 0,
-		LEVEL2,
-		NUM_LEVELS
 	};
 
 private:
@@ -70,12 +66,11 @@ private:
 	float spawnInterval = 1.5; // Intervalo de tiempo entre spawns de
 	int _arrows;
 	std::mt19937_64 randomGenerator{ std::random_device{}() };
+	std::vector<callback> _callbacks;
 
 	// Elemento del juego
 	// TODO: añadir atributos para los objetos del juego
-	Bow* bow = nullptr;
-	std::vector<class Arrow*> arrows; // Vector para almacenar las flechas disparadas
-	std::vector<class Balloon*> balloons; // Vector para almacenar los globos
+	std::vector<SceneObject*> objects;
 	InfoBar* infoBar = nullptr;
 
 public:
@@ -87,11 +82,15 @@ public:
 
 	// Ejecuta el bucle principal del juego
 	void run();
-	void addArrow(Arrow* arrow);
 	// Comprueba si hay algún objeto colocado en ese rectángulo
 	bool checkCollision(const Rectangle& rect);
 	void loadMap(const std::string& file);
 	void addScore(int points);
+	void addObject(SceneObject*);
+	void updateArrows();
+
+	void addCallback(callback callback);
+	void processCallbacks();
 };
 
 inline Texture*
