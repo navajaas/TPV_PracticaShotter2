@@ -14,6 +14,7 @@
 class Texture;
 class Bow;
 class Balloon;
+class Butterfly;
 class InfoBar;
 class SceneObject;
 
@@ -38,6 +39,7 @@ public:
 		ARROW,
 		BALLOON,
 		BACKGROUND,
+		MARIPOSA,
 		NUM_TEXTURES
 	};
 
@@ -63,6 +65,7 @@ private:
 
 	bool exit;
 	void spawnBalloon();
+	void spawnButterflyes(int cantidad);
 	float spawnTimer = 0.0f; // Temporizador para el spawn de globos
 	float spawnInterval = 1.5; // Intervalo de tiempo entre spawns de
 	int _arrows;

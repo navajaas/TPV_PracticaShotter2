@@ -12,6 +12,7 @@
 #include "Balloon.h"
 #include "InfoBar.h"
 #include "SceneObject.h"
+#include "Butterfly.h"
 
 using namespace std;
 
@@ -21,6 +22,7 @@ constexpr const char* IMAGE_ROOT = "../assets/images/";
 constexpr const char* LEVEL_ROOT = "../assets/levels/";
 constexpr float BALLOON_SIZE = 60.0f;
 constexpr float BOW_SIZE = 64.0f;
+constexpr float BUTTERFLY_SIZE = 64.0f;
 
 // Estructura para especificar las texturas que hay que
 // cargar y el tamaño de su matriz de frames
@@ -35,7 +37,8 @@ constexpr array<TextureSpec, Game::NUM_TEXTURES> textureList{
 	TextureSpec{"bow.png", 1, 2},
 	{"arrow.png"},
 	{"balloons.png",7,6},
-	{"background1.png"}
+	{"background1.png"},
+	{"mariposa.png"}
 };
 
 
@@ -259,6 +262,7 @@ void Game::loadMap(const std::string& filename)
 	spawnInterval = newSpawnInterval;
 	balloonPoints = newBalloonPoints;
 	
+	spawnButterflyes(3);
 
 }
 
@@ -284,7 +288,31 @@ void Game::spawnBalloon()
     );
 
 }
+void Game::spawnButterflyes(int cantidad) {
 
+	for (int i = 0; i < cantidad; i++) {
+		int minX = 10;
+		int maxX = WINDOW_WIDTH - BUTTERFLY_SIZE;
+
+		int minY = 10;
+		int maxY = WINDOW_HEIGHT - BUTTERFLY_SIZE;
+
+		std::uniform_int_distribution<int> xDistribution(minX, maxX);
+		std::uniform_int_distribution<int> yDistribution(minY, maxY);
+
+		float randomX = xDistribution(randomGenerator);
+		float randomY = yDistribution(randomGenerator);
+
+		float randomSpeedY = std::uniform_real_distribution<float>(50.0f, 150.0f)(randomGenerator);
+		float randomSpeedX = std::uniform_real_distribution<float>(50.0f, 150.0f)(randomGenerator);
+
+		addObject(
+			new Butterfly(this, { { randomX, randomY }, BUTTERFLY_SIZE, BUTTERFLY_SIZE }, getTexture(MARIPOSA),
+				{ randomSpeedX,randomSpeedY })
+		);
+	}
+	
+}
 void Game::addScore(int points)
 {
 	if (points <= 0 || gameWon || exit)
