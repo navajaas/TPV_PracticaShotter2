@@ -84,9 +84,6 @@ Game::Game()
 	// Configura que se pueden utilizar capas translúcidas
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 
-	Point2D position(50.0f, 200.0f);              
-
-	addObject(new Bow(this, Rectangle(position, BOW_SIZE, BOW_SIZE), getTexture(BOW)));
 	//infoBar = new InfoBar(Rectangle(Point2D<>(50, 30), 60, 15), _arrows, getTexture(ARROW));
 
 	loadMap(LEVEL_ROOT + std::string("1.txt"));
@@ -125,6 +122,9 @@ Game::render() const
 
 void Game::update(float delta)
 {
+	if (checkLevelProgress()) {
+		changeLevel();
+	}
 	spawnTimer += delta;
 
 	if (spawnTimer >= spawnInterval)
@@ -198,6 +198,11 @@ bool Game::checkCollision(const Rectangle& rect)
 
 void Game::loadMap(const std::string& filename)
 {
+
+	Point2D position(50.0f, 200.0f);
+
+	addObject(new Bow(this, Rectangle(position, BOW_SIZE, BOW_SIZE), getTexture(BOW)));
+
 	std::ifstream file(filename);
 
 	if (!file.is_open())
@@ -290,7 +295,6 @@ void Game::addScore(int points)
 	std::cout << "Puntuacion: " << score
 		<< " / " << targetScore << '\n';
 
-	checkLevelProgress();
 }
 
 void Game::addObject(SceneObject* object)
@@ -298,11 +302,16 @@ void Game::addObject(SceneObject* object)
 	objects.push_back(object);
 }
 
-void Game::checkLevelProgress()
+bool Game::checkLevelProgress()
 {
 	if (score < targetScore)
-		return;
+		return false;
+	else if (score >= targetScore) {
+		return true;
+	}
+}
 
+void Game::changeLevel() {
 	// El siguiente nivel debe tener un número consecutivo.
 	const int nextLevel = currentLevel + 1;
 
@@ -338,6 +347,7 @@ void Game::checkLevelProgress()
 
 	std::cout << "¡Nivel " << currentLevel << "!\n";
 }
+	
 
 void Game::updateArrows() {
 	_arrows--;

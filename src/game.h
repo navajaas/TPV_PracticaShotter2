@@ -54,7 +54,8 @@ private:
 
 	bool gameWon = false;
 
-	void checkLevelProgress();
+	bool checkLevelProgress();
+	void changeLevel();
 
 	void render() const;
 	void update(float delta);
