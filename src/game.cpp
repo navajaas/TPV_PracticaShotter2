@@ -22,7 +22,8 @@ constexpr const char* IMAGE_ROOT = "../assets/images/";
 constexpr const char* LEVEL_ROOT = "../assets/levels/";
 constexpr float BALLOON_SIZE = 60.0f;
 constexpr float BOW_SIZE = 64.0f;
-constexpr float BUTTERFLY_SIZE = 64.0f;
+constexpr float BUTTERFLY_WIDTH = 64.0f;
+constexpr float BUTTERFLY_HEIGHT = 44.0f;
 
 // Estructura para especificar las texturas que hay que
 // cargar y el tamaño de su matriz de frames
@@ -38,7 +39,7 @@ constexpr array<TextureSpec, Game::NUM_TEXTURES> textureList{
 	{"arrow.png"},
 	{"balloons.png",7,6},
 	{"background1.png"},
-	{"mariposa.png"}
+	{"butterfly.png",4,10}
 };
 
 
@@ -113,7 +114,7 @@ Game::render() const
 {
 	SDL_RenderClear(renderer);
 
-	getTexture(BACKGROUND)->render();
+	SDL_SetRenderDrawColor(renderer, r, g, b, 255);
 
 	for (SceneObject* o : objects) {
 		o->render();
@@ -191,7 +192,6 @@ bool Game::checkCollision(const Rectangle& rect)
 	for (SceneObject* o : objects)
 	{
 		if (o->hit(rect)) {
-			addScore(balloonPoints);
 			return true;
 		}
 	}
@@ -251,6 +251,18 @@ void Game::loadMap(const std::string& filename)
 				throw std::string(
 					"Error leyendo el número de puntos que aporta cada globo explotado");
 		}
+		else if (key=="butterflies") {
+			int numButterflies;
+			if (!(iss >> numButterflies) || numButterflies < 0)
+				throw std::string(
+					"Error leyendo la cantidad de mariposas a generar");
+			spawnButterflyes(numButterflies);
+		}
+		else if (key == "bgcolor") {
+			if (!(iss >> r >> g >> b) || r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255)
+				throw std::string(
+					"Error leyendo el color de fondo");
+		}
 	}
 
 	if (newArrows < 0)
@@ -261,8 +273,6 @@ void Game::loadMap(const std::string& filename)
 	targetScore = newTargetScore;
 	spawnInterval = newSpawnInterval;
 	balloonPoints = newBalloonPoints;
-	
-	spawnButterflyes(3);
 
 }
 
@@ -282,20 +292,21 @@ void Game::spawnBalloon()
     int randomColorIndex = std::uniform_int_distribution<int>(0, numColors - 1)(randomGenerator);
 	float randomSpeedY = std::uniform_real_distribution<float>(50.0f, 150.0f)(randomGenerator);
 
-    objects.push_back(
-        new Balloon(this,{ { randomX, startY }, BALLOON_SIZE, BALLOON_SIZE }, getTexture(BALLOON),
-			{0,-randomSpeedY}, randomColorIndex)
-    );
+	Balloon* b = new Balloon(this, { { randomX, startY }, BALLOON_SIZE, BALLOON_SIZE }, getTexture(BALLOON),
+		{ 0,-randomSpeedY }, randomColorIndex);
+	addObject(b);
+	b->setPoints(balloonPoints);
+
 
 }
 void Game::spawnButterflyes(int cantidad) {
 
 	for (int i = 0; i < cantidad; i++) {
 		int minX = 10;
-		int maxX = WINDOW_WIDTH - BUTTERFLY_SIZE;
+		int maxX = WINDOW_WIDTH - BUTTERFLY_WIDTH;
 
 		int minY = 10;
-		int maxY = WINDOW_HEIGHT - BUTTERFLY_SIZE;
+		int maxY = WINDOW_HEIGHT - BUTTERFLY_HEIGHT;
 
 		std::uniform_int_distribution<int> xDistribution(minX, maxX);
 		std::uniform_int_distribution<int> yDistribution(minY, maxY);
@@ -306,8 +317,7 @@ void Game::spawnButterflyes(int cantidad) {
 		float randomSpeedY = std::uniform_real_distribution<float>(50.0f, 150.0f)(randomGenerator);
 		float randomSpeedX = std::uniform_real_distribution<float>(50.0f, 150.0f)(randomGenerator);
 
-		addObject(
-			new Butterfly(this, { { randomX, randomY }, BUTTERFLY_SIZE, BUTTERFLY_SIZE }, getTexture(MARIPOSA),
+		addObject(new Butterfly(this, { { randomX, randomY }, BUTTERFLY_WIDTH, BUTTERFLY_HEIGHT }, getTexture(MARIPOSA),
 				{ randomSpeedX,randomSpeedY })
 		);
 	}
@@ -315,7 +325,7 @@ void Game::spawnButterflyes(int cantidad) {
 }
 void Game::addScore(int points)
 {
-	if (points <= 0 || gameWon || exit)
+	if (gameWon || exit)
 		return;
 
 	score += points;

@@ -8,19 +8,23 @@
 class Butterfly: public MobileObject
 {
 public:
-	Butterfly(Game* game, Rectangle rect, Texture* texture, Vector2D<float> dirSpeed);
+	Butterfly(Game*, Rectangle, Texture*, Vector2D<float>);
 
 	void render() const override;
-	bool update(float delta) override;
+	bool update(float) override;
 
-	//void handleEvents(const SDL_Event& event) override;
-	bool hit(const Rectangle& rect) override;
+	bool hit(const Rectangle&) override;
 private:
-	static constexpr int WINDOW_WIDTH = 800;
-	static constexpr int WINDOW_HEIGHT = 600;
-	bool dead = false;
 	std::mt19937_64 randomGenerator{ std::random_device{}() };
 	float randomSpeedY = 0;
 	float randomSpeedX = 0;
+
+	int currentFrame = 0;
+	float animationTimer = 0.0f;
+	int frameDirection = 1;
+
+	bool hitByArrow = false;
+
+	int getDirectionRow() const;
 };
 

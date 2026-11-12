@@ -1,4 +1,5 @@
 #include "Balloon.h"
+#include "game.h"
 #include <iostream>
 
 constexpr float FRAME_DURATION = 0.08f;
@@ -50,6 +51,7 @@ bool Balloon::update(float delta) {
 bool Balloon::hit(const Rectangle& other)
 {
     if (!exploding && rect.hasIntersection(other)) {
+        game->addScore(points);
         exploding = true;
         explosionFrame = 0;
         animationTimer = 0.0f;

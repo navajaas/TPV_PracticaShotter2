@@ -16,6 +16,7 @@ public:
 	void render() const override;
 	bool update(float delta) override;
 	bool hit(const Rectangle& rect) override;
+	void setPoints(int p) { points = p; }
 
 private:
 	int color;
@@ -23,5 +24,7 @@ private:
 
 	int explosionFrame = 0;
 	float animationTimer = 0.0f;
+
+	int points;
 };
 #endif // BALLOON_H

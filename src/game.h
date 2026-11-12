@@ -77,6 +77,8 @@ private:
 	std::vector<SceneObject*> objects;
 	InfoBar* infoBar = nullptr;
 
+	int r, g, b;
+
 public:
 	Game();
 	~Game();
