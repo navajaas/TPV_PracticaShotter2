@@ -17,6 +17,7 @@ public:
 	void render() const override;
 	bool update(float delta) override;
 	bool hit(const Rectangle&) override { return false; }
+	std::string getType() const override { return "ARROW"; }
 
 private:
 	Rectangle rectColision;

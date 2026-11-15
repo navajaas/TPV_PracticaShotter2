@@ -15,8 +15,14 @@ public:
 	
 	void render() const override;
 	bool update(float delta) override;
+
 	bool hit(const Rectangle& rect) override;
+
 	void setPoints(int p) { points = p; }
+
+	void save(std::ostream& os) const override;
+	void load(std::istream& is) override;
+	std::string getType() const override { return "BALLOON"; }
 
 private:
 	int color;

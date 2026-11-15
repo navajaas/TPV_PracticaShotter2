@@ -66,6 +66,10 @@ private:
 	bool exit;
 	void spawnBalloon();
 	void spawnButterflyes(int cantidad);
+
+	void saveGame() const;
+	void loadGame();
+
 	float spawnTimer = 0.0f; // Temporizador para el spawn de globos
 	float spawnInterval = 1.5; // Intervalo de tiempo entre spawns de
 	int _arrows;

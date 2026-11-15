@@ -4,6 +4,8 @@
 #include "GameObject.h"
 #include "rectangle.h"
 #include "vector2D.h"
+#include <iostream>
+#include <string>
 
 class Texture;
 
@@ -19,6 +21,10 @@ public:
 	~SceneObject();
 
 	virtual bool hit(const Rectangle&) = 0;
+
+	virtual void save(std::ostream& os) const;
+	virtual void load(std::istream& is);
+	virtual std::string getType() const = 0;
 };
 
 #endif //SCENEOBJECT_H

@@ -35,10 +35,6 @@ bool Balloon::update(float delta) {
         return true;
     }
 
-
-    // Si está vivo, continúa subiendo
-    rect.move(Vector2D<>(speed*delta));
-
     // Si sale de la pantalla, se elimina
     if (rect.getTopLeftCorner().getY() + rect.getHeight() < 0) {
         return false;
@@ -59,4 +55,24 @@ bool Balloon::hit(const Rectangle& other)
     }
 
     return false;
+}
+
+void Balloon::save(std::ostream& os) const
+{
+    MobileObject::save(os);
+
+    os << color << ' '
+        << exploding << ' '
+        << points << ' ';
+}
+
+void Balloon::load(std::istream& is)
+{
+    MobileObject::load(is);
+
+    if (!(is >> color >> exploding >> points))
+        throw std::string("Error al leer Balloon");
+
+    explosionFrame = 0;
+    animationTimer = 0.0f;
 }

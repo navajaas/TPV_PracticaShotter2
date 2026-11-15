@@ -14,6 +14,11 @@ public:
 	bool update(float) override;
 
 	bool hit(const Rectangle&) override;
+
+	void save(std::ostream& os) const override;
+	void load(std::istream& is) override;
+	std::string getType() const override { return "BUTTERFLY"; }
+
 private:
 	std::mt19937_64 randomGenerator{ std::random_device{}() };
 	float randomSpeedY = 0;

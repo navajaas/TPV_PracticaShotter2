@@ -184,6 +184,19 @@ void Game::handleEvents()
 		for (size_t i = 0; i < count; ++i) {
 			objects[i]->handleEvents(event);
 		}
+
+		if (event.type == SDL_EVENT_KEY_DOWN &&
+			(event.key.mod & SDL_KMOD_CTRL))
+		{
+			if (event.key.key == SDLK_S)
+			{
+				saveGame();
+			}
+			else if (event.key.key == SDLK_O)
+			{
+				loadGame();
+			}
+		}
 	}
 }
 
@@ -299,6 +312,7 @@ void Game::spawnBalloon()
 
 
 }
+
 void Game::spawnButterflyes(int cantidad) {
 
 	for (int i = 0; i < cantidad; i++) {
@@ -323,6 +337,140 @@ void Game::spawnButterflyes(int cantidad) {
 	}
 	
 }
+
+void Game::saveGame() const
+{
+	std::ofstream file("saved.txt");
+
+	if (!file)
+		throw std::string("No se pudo abrir saved.txt");
+
+	file << "GAME 1\n";
+
+	file << currentLevel << ' '
+		<< score << ' '
+		<< gameWon << ' '
+		<< objects.size() << '\n';
+
+	for (const auto* obj : objects)
+	{
+		file << obj->getType() << ' ';
+		obj->save(file);
+		file << '\n';
+	}
+}
+
+void Game::loadGame()
+{
+	std::ifstream file("saved.txt");
+
+	if (!file)
+		throw std::string("No se pudo abrir saved.txt");
+
+	// Comprobar cabecera y versión
+	std::string header;
+	int version;
+
+	if (!(file >> header >> version) ||
+		header != "GAME" || version != 1)
+	{
+		throw std::string("Archivo de guardado no válido");
+	}
+
+	// Leer datos generales
+	int savedLevel;
+	int savedScore;
+	bool savedGameWon;
+	size_t numObjects;
+
+	if (!(file >> savedLevel >> savedScore
+		>> savedGameWon >> numObjects))
+	{
+		throw std::string("Datos generales incorrectos");
+	}
+
+	if (savedLevel < 1 || numObjects > 10000)
+		throw std::string("Datos de partida no válidos");
+
+	// Leer y crear los objetos antes de modificar la partida actual
+	std::vector<SceneObject*> loadedObjects;
+
+	try
+	{
+		for (size_t i = 0; i < numObjects; ++i)
+		{
+			std::string type;
+
+			if (!(file >> type))
+				throw std::string("Falta el tipo de objeto");
+
+			SceneObject* obj = nullptr;
+
+			if (type == "BOW")
+			{
+				obj = new Bow(
+					this,
+					Rectangle(),
+					getTexture(Game::BOW)
+				);
+			}
+			else if (type == "BALLOON")
+			{
+				obj = new Balloon(
+					this,
+					Rectangle(),
+					getTexture(Game::BALLOON),
+					Vector2D<float>(),
+					0
+				);
+			}
+			else if (type == "BUTTERFLY")
+			{
+				obj = new Butterfly(
+					this,
+					Rectangle(),
+					getTexture(Game::MARIPOSA),
+					Vector2D<float>()
+				);
+			}
+			else
+			{
+				throw std::runtime_error("Tipo de objeto desconocido: " + type);
+			}
+
+			obj->load(file);
+			loadedObjects.push_back(obj);
+		}
+	}
+	catch (...)
+	{
+		for (SceneObject* obj : loadedObjects)
+			delete obj;
+
+		throw;
+	}
+
+	file >> std::ws;
+
+	if (!file.eof())
+	{
+		for (SceneObject* obj : loadedObjects)
+			delete obj;
+
+		throw std::string("El archivo contiene datos adicionales");
+	}
+
+	for (SceneObject* obj : objects)
+		delete obj;
+
+	objects.clear();
+	objects = std::move(loadedObjects);
+
+	currentLevel = savedLevel;
+	score = savedScore;
+	gameWon = savedGameWon;
+}
+
 void Game::addScore(int points)
 {
 	if (gameWon || exit)

@@ -114,6 +114,7 @@ bool Butterfly::update(float delta)
 bool Butterfly::hit(const Rectangle& other) {
 
     if (!hitByArrow && rect.hasIntersection(other)) {
+        game->addScore(-10);
         hitByArrow = true;
         speed.setX(0);
         speed.setY(FALL_SPEED);
@@ -134,4 +135,25 @@ int Butterfly::getDirectionRow() const
     }
 
     return (vy < 0) ? 2 : 3;
+}
+
+void Butterfly::save(std::ostream& os) const
+{
+    MobileObject::save(os);
+
+    os << randomSpeedY << ' '
+        << randomSpeedX << ' '
+        << hitByArrow << ' ';
+}
+
+void Butterfly::load(std::istream& is)
+{
+    MobileObject::load(is);
+
+    if (!(is >> randomSpeedY >> randomSpeedX >> hitByArrow))
+        throw std::string("Error al leer Butterfly");
+
+    currentFrame = 0;
+    animationTimer = 0.0f;
+    frameDirection = 1;
 }

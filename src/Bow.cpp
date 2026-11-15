@@ -1,4 +1,5 @@
 #include "Bow.h"
+#include "Arrow.h"
 #include "MobileObject.h"
 
 constexpr float BOW_SPEED = 200.0f; // Velocidad de movimiento del arco
@@ -76,4 +77,37 @@ void Bow::shootArrow() {
 		game->updateArrows();
 		game->addObject(arrow); // Agregar la flecha al juego
 	}
+}
+
+void Bow::save(std::ostream& os) const
+{
+	SceneObject::save(os);
+
+	os << velocity.getX() << ' '
+		<< velocity.getY() << ' '
+		<< arrowArmad << ' '
+		<< timeSinceLastShot << ' ';
+
+	if (!os)
+		throw std::string("Error al guardar Bow");
+}
+
+void Bow::load(std::istream& is)
+{
+	SceneObject::load(is);
+
+	float velocityX, velocityY;
+
+	if (!(is >> velocityX
+		>> velocityY
+		>> arrowArmad
+		>> timeSinceLastShot))
+	{
+		throw std::string("Error al leer Bow");
+	}
+
+	if (timeSinceLastShot < 0)
+		throw std::string("Tiempo de disparo incorrecto");
+
+	velocity = Vector2D<>(velocityX, velocityY);
 }

@@ -20,8 +20,13 @@ public:
 	bool update(float delta) override;
 
 	void handleEvents(const SDL_Event& event) override;
-	void shootArrow();
 	bool hit(const Rectangle&) override { return false; }
+
+	void shootArrow();
+
+	void save(std::ostream& os) const override;
+	void load(std::istream& is) override;
+	std::string getType() const override { return "BOW"; }
 
 private:
 	Vector2D<> velocity;

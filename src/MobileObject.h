@@ -12,6 +12,8 @@ public:
 	~MobileObject() {};
 
 	bool update(float delta) override;
+	void save(std::ostream& os) const override;
+	void load(std::istream& is) override;
 };
 
 #endif //MOBILEOBJECT_H
