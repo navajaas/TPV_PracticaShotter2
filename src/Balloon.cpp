@@ -1,6 +1,7 @@
 #include "Balloon.h"
 #include "game.h"
 #include <iostream>
+#include "GameError.h"
 
 constexpr float FRAME_DURATION = 0.08f;
 constexpr int EXPLOSION_FRAMES = 6;
@@ -71,7 +72,7 @@ void Balloon::load(std::istream& is)
     MobileObject::load(is);
 
     if (!(is >> color >> exploding >> points))
-        throw std::string("Error al leer Balloon");
+		throw FileFormatError("saved.txt", 0, "Error al leer Balloon");
 
     explosionFrame = 0;
     animationTimer = 0.0f;

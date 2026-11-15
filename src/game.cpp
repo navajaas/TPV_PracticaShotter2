@@ -13,6 +13,7 @@
 #include "InfoBar.h"
 #include "SceneObject.h"
 #include "Butterfly.h"
+#include "GameError.h"
 
 using namespace std;
 
@@ -211,84 +212,99 @@ bool Game::checkCollision(const Rectangle& rect)
 
 	return false;
 }
-
 void Game::loadMap(const std::string& filename)
 {
+	std::ifstream file(filename);
+
+	if (!file.is_open())
+		throw FileNotFoundError(filename);
 
 	Point2D position(50.0f, 200.0f);
 
 	addObject(new Bow(this, Rectangle(position, BOW_SIZE, BOW_SIZE), getTexture(BOW)));
 
-	std::ifstream file(filename);
-
-	if (!file.is_open())
-		throw std::string("Error al abrirse el archivo: ") + filename;
-
-	// Valores por defecto para este nivel.
+	// Valores por defecto para este nivel
 	int newArrows = -1;
 	int newTargetScore = 10;
 	float newSpawnInterval = 1.5f;
 	int newBalloonPoints = 1;
 
 	std::string line;
+	int lineNumber = 0;
 
-	while (std::getline(file, line)) {
+	while (std::getline(file, line))
+	{
+		lineNumber++;
+
 		if (line.empty() || line[0] == '#')
 			continue;
 
 		std::istringstream iss(line);
 		std::string key;
-		iss >> key;
 
-		if (key == "arrows") {
+		if (!(iss >> key))
+			continue;
+
+		if (key == "arrows")
+		{
 			if (!(iss >> newArrows) || newArrows < 0)
-				throw std::string(
+				throw FileFormatError(filename, lineNumber,
 					"Error leyendo la cantidad de flechas");
 		}
-		else if (key == "baldelay") {
+		else if (key == "baldelay")
+		{
 			int milliseconds;
 
 			if (!(iss >> milliseconds) || milliseconds <= 0)
-				throw std::string(
+				throw FileFormatError(filename, lineNumber,
 					"Error leyendo el intervalo de spawn");
 
 			newSpawnInterval = milliseconds / 1000.0f;
 		}
-		else if (key == "goal") {
+		else if (key == "goal")
+		{
 			if (!(iss >> newTargetScore) || newTargetScore <= 0)
-				throw std::string(
+				throw FileFormatError(filename, lineNumber,
 					"Error leyendo la puntuacion objetivo");
 		}
-		else if (key == "balpoints") {
+		else if (key == "balpoints")
+		{
 			if (!(iss >> newBalloonPoints) || newBalloonPoints <= 0)
-				throw std::string(
-					"Error leyendo el número de puntos que aporta cada globo explotado");
+				throw FileFormatError(filename, lineNumber,
+					"Error leyendo los puntos de cada globo");
 		}
-		else if (key=="butterflies") {
+		else if (key == "butterflies")
+		{
 			int numButterflies;
+
 			if (!(iss >> numButterflies) || numButterflies < 0)
-				throw std::string(
-					"Error leyendo la cantidad de mariposas a generar");
+				throw FileFormatError(filename, lineNumber,
+					"Error leyendo la cantidad de mariposas");
+
 			spawnButterflyes(numButterflies);
 		}
-		else if (key == "bgcolor") {
-			if (!(iss >> r >> g >> b) || r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255)
-				throw std::string(
+		else if (key == "bgcolor")
+		{
+			if (!(iss >> r >> g >> b) ||
+				r < 0 || r > 255 ||
+				g < 0 || g > 255 ||
+				b < 0 || b > 255)
+			{
+				throw FileFormatError(filename, lineNumber,
 					"Error leyendo el color de fondo");
+			}
 		}
 	}
 
 	if (newArrows < 0)
-		throw std::string(
+		throw FileFormatError(filename, lineNumber,
 			"El nivel no especifica una cantidad valida de flechas");
 
 	_arrows = newArrows;
 	targetScore = newTargetScore;
 	spawnInterval = newSpawnInterval;
 	balloonPoints = newBalloonPoints;
-
 }
-
 
 void Game::spawnBalloon()
 {
@@ -362,47 +378,55 @@ void Game::saveGame() const
 
 void Game::loadGame()
 {
-	std::ifstream file("saved.txt");
+	const std::string filename = "saved.txt";
+	std::ifstream file(filename);
 
-	if (!file)
-		throw std::string("No se pudo abrir saved.txt");
+	if (!file.is_open())
+		throw FileNotFoundError(filename);
 
-	// Comprobar cabecera y versión
+	int lineNumber = 1;
+
 	std::string header;
 	int version;
 
 	if (!(file >> header >> version) ||
 		header != "GAME" || version != 1)
 	{
-		throw std::string("Archivo de guardado no válido");
+		throw FileFormatError(filename, lineNumber,
+			"Cabecera o version incorrecta");
 	}
 
-	// Leer datos generales
 	int savedLevel;
 	int savedScore;
 	bool savedGameWon;
 	size_t numObjects;
 
+	lineNumber++;
+
 	if (!(file >> savedLevel >> savedScore
 		>> savedGameWon >> numObjects))
 	{
-		throw std::string("Datos generales incorrectos");
+		throw FileFormatError(filename, lineNumber,
+			"Datos generales incorrectos");
 	}
 
 	if (savedLevel < 1 || numObjects > 10000)
-		throw std::string("Datos de partida no válidos");
+		throw FileFormatError(filename, lineNumber,
+			"Datos de partida no validos");
 
-	// Leer y crear los objetos antes de modificar la partida actual
 	std::vector<SceneObject*> loadedObjects;
 
 	try
 	{
 		for (size_t i = 0; i < numObjects; ++i)
 		{
+			lineNumber++;
+
 			std::string type;
 
 			if (!(file >> type))
-				throw std::string("Falta el tipo de objeto");
+				throw FileFormatError(filename, lineNumber,
+					"Falta el tipo de objeto");
 
 			SceneObject* obj = nullptr;
 
@@ -435,11 +459,20 @@ void Game::loadGame()
 			}
 			else
 			{
-				throw std::runtime_error("Tipo de objeto desconocido: " + type);
+				throw FileFormatError(filename, lineNumber,
+					"Tipo de objeto desconocido: " + type);
 			}
 
-			obj->load(file);
-			loadedObjects.push_back(obj);
+			try
+			{
+				obj->load(file);
+				loadedObjects.push_back(obj);
+			}
+			catch (...)
+			{
+				delete obj;
+				throw;
+			}
 		}
 	}
 	catch (...)
@@ -451,14 +484,15 @@ void Game::loadGame()
 	}
 
 	file >> std::ws;
-
 	if (!file.eof())
 	{
 		for (SceneObject* obj : loadedObjects)
 			delete obj;
 
-		throw std::string("El archivo contiene datos adicionales");
+		throw FileFormatError(filename, lineNumber,
+			"Hay datos adicionales al final del archivo");
 	}
+
 
 	for (SceneObject* obj : objects)
 		delete obj;

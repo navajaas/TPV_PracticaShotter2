@@ -1,5 +1,6 @@
 #include "MobileObject.h"
 #include <stdexcept>
+#include "GameError.h"
 
 MobileObject::MobileObject(Game* g, Rectangle r, Texture* tex, Vector2D<float> s)
 	: SceneObject(g,r,tex), speed(s)
@@ -21,7 +22,7 @@ void MobileObject::save(std::ostream& os) const
         << speed.getY() << ' ';
 
     if (!os)
-        throw std::runtime_error("Error al guardar MobileObject");
+		throw GameError("Error al guardar MobileObject");
 }
 
 void MobileObject::load(std::istream& is)
@@ -31,7 +32,7 @@ void MobileObject::load(std::istream& is)
     float speedX, speedY;
 
     if (!(is >> speedX >> speedY))
-        throw std::runtime_error("Error al leer MobileObject");
+		throw FileFormatError("saved.txt", 0, "Error al leer MobileObject");
 
     speed = Vector2D<float>(speedX, speedY);
 }

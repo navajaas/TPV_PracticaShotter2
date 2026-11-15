@@ -1,4 +1,5 @@
 #include "Butterfly.h"
+#include "GameError.h"
 #include <cmath>
 
 static constexpr int BUTTERFLY_ANIMATION_ROWS = 4;
@@ -151,7 +152,7 @@ void Butterfly::load(std::istream& is)
     MobileObject::load(is);
 
     if (!(is >> randomSpeedY >> randomSpeedX >> hitByArrow))
-        throw std::string("Error al leer Butterfly");
+		throw FileFormatError("saved.txt", 0, "Error al leer Butterfly");
 
     currentFrame = 0;
     animationTimer = 0.0f;

@@ -1,6 +1,7 @@
 #include "Bow.h"
 #include "Arrow.h"
 #include "MobileObject.h"
+#include "GameError.h"
 
 constexpr float BOW_SPEED = 200.0f; // Velocidad de movimiento del arco
 constexpr float SHOOT_CD = 0.2f; // Tiempo de espera entre disparos
@@ -89,7 +90,7 @@ void Bow::save(std::ostream& os) const
 		<< timeSinceLastShot << ' ';
 
 	if (!os)
-		throw std::string("Error al guardar Bow");
+		throw GameError("Error al guardar Bow");
 }
 
 void Bow::load(std::istream& is)
@@ -103,11 +104,20 @@ void Bow::load(std::istream& is)
 		>> arrowArmad
 		>> timeSinceLastShot))
 	{
-		throw std::string("Error al leer Bow");
+		throw FileFormatError(
+			"saved.txt", 0,
+			"Error al leer los datos de Bow"
+		);
 	}
 
 	if (timeSinceLastShot < 0)
-		throw std::string("Tiempo de disparo incorrecto");
+	{
+		throw FileFormatError(
+			"saved.txt", 0,
+			"Tiempo de espera entre disparos negativo en Bow"
+		);
+	}
 
 	velocity = Vector2D<>(velocityX, velocityY);
+	arrow = nullptr;
 }
