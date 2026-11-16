@@ -22,7 +22,18 @@ bool Arrow::update(float delta) {
 	// Actualiza la posición de la flecha
 	rect.move(Vector2D<>(speed*delta));
 	rectColision = Rectangle(rect.getTopLeftCorner(), rect.getWidth()-20, rect.getHeight());
-	game->checkCollision(rectColision);
+	int score = game->getScore();
+
+	if(game->checkCollision(rectColision))
+	{
+		balloonHitCount++;
+		game->addScore(10, balloonHitCount);
+	}
+
+	// Si sale de la pantalla, se elimina
+	if (rect.getTopLeftCorner().getX() + rect.getWidth() < 0) {
+		return false;
+	}
 
 	return true;
 }

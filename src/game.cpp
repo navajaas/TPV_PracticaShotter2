@@ -203,14 +203,17 @@ void Game::handleEvents()
 
 bool Game::checkCollision(const Rectangle& rect)
 {
+	bool hitBallon = false;
 	for (SceneObject* o : objects)
 	{
 		if (o->hit(rect)) {
-			return true;
+			if (o->getType() == "BALLOON") {
+				hitBallon = true;
+			}
 		}
 	}
 
-	return false;
+	return hitBallon;
 }
 void Game::loadMap(const std::string& filename)
 {
@@ -505,12 +508,17 @@ void Game::loadGame()
 	gameWon = savedGameWon;
 }
 
-void Game::addScore(int points)
+void Game::addScore(int points, int numBallons)
 {
 	if (gameWon || exit)
 		return;
+	if (numBallons <= 1) {
+		score += points;
 
-	score += points;
+	}
+	else {
+ 		score += points * numBallons;
+	}
 
 	std::cout << "Puntuacion: " << score
 		<< " / " << targetScore << '\n';

@@ -95,12 +95,13 @@ public:
 	// Comprueba si hay algún objeto colocado en ese rectángulo
 	bool checkCollision(const Rectangle& rect);
 	void loadMap(const std::string& file);
-	void addScore(int points);
+	void addScore(int points, int numBallons=1);
 	void addObject(SceneObject*);
 	void updateArrows();
 
 	void addCallback(callback callback);
 	void processCallbacks();
+	int getScore() const { return score; }
 };
 
 inline Texture*

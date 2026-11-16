@@ -18,9 +18,9 @@ public:
 	bool update(float delta) override;
 	bool hit(const Rectangle&) override { return false; }
 	std::string getType() const override { return "ARROW"; }
-
 private:
 	Rectangle rectColision;
+	int balloonHitCount = 0; // Contador de globos alcanzados por la flecha
 };
 #endif // ARROW_H
 
