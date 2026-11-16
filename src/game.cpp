@@ -160,7 +160,7 @@ void
 Game::run()
 {
 	Uint64 lastTime = SDL_GetTicks();
-	while (!exit) {
+	while (!exit&& !gameLost) {
 		Uint64 currentTime = SDL_GetTicks();
 		float delta = (currentTime - lastTime) / 1000.0f; 
 		lastTime = currentTime;
@@ -231,7 +231,7 @@ void Game::loadMap(const std::string& filename)
 	int newTargetScore = 10;
 	float newSpawnInterval = 1.5f;
 	int newBalloonPoints = 1;
-
+	aliveButterflies = 0;
 	std::string line;
 	int lineNumber = 0;
 
@@ -333,7 +333,7 @@ void Game::spawnBalloon()
 }
 
 void Game::spawnButterflyes(int cantidad) {
-
+	aliveButterflies = cantidad;
 	for (int i = 0; i < cantidad; i++) {
 		int minX = 10;
 		int maxX = WINDOW_WIDTH - BUTTERFLY_WIDTH;
@@ -510,7 +510,7 @@ void Game::loadGame()
 
 void Game::addScore(int points, int numBallons)
 {
-	if (gameWon || exit)
+	if (gameWon || gameLost || exit)
 		return;
 	if (numBallons <= 1) {
 		score += points;
@@ -595,5 +595,12 @@ void Game::processCallbacks()
 
 		for (auto& callback : pending)
 			callback();
+	}
+}
+void Game::onButterflyKilled() {
+	aliveButterflies--;
+	if (aliveButterflies <= 0) {
+		std::cout << "¡Has matado a todas las mariposas!\n";
+		gameLost = true;
 	}
 }

@@ -119,6 +119,7 @@ bool Butterfly::hit(const Rectangle& other) {
         hitByArrow = true;
         speed.setX(0);
         speed.setY(FALL_SPEED);
+		game->onButterflyKilled(); 
         return true;
     }
 

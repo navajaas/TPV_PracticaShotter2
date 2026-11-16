@@ -29,6 +29,7 @@ void Bow::handleEvents(const SDL_Event& event) {
 			velocity.setY(1.0f); // Mover hacia abajo
 			break;
 		case SDLK_SPACE:
+		case SDLK_RIGHT:
 			if (timeSinceLastShot <= 0.0f) {
 				if (!arrowArmad) {
 					arrowArmad = true; // Preparar la flecha para disparar

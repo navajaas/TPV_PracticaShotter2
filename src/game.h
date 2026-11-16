@@ -55,7 +55,7 @@ private:
 	int balloonPoints = 1;
 
 	bool gameWon = false;
-
+	bool gameLost = false;
 	bool checkLevelProgress();
 	void changeLevel();
 
@@ -82,6 +82,7 @@ private:
 	InfoBar* infoBar = nullptr;
 
 	int r, g, b;
+	int aliveButterflies = 0;
 
 public:
 	Game();
@@ -101,7 +102,7 @@ public:
 
 	void addCallback(callback callback);
 	void processCallbacks();
-	int getScore() const { return score; }
+	void onButterflyKilled();
 };
 
 inline Texture*
