@@ -22,18 +22,17 @@ public:
 	void handleEvents(const SDL_Event& event) override;
 	bool hit(const Rectangle&) override { return false; }
 
-	void shootArrow();
-
 	void save(std::ostream& os) const override;
 	void load(std::istream& is, int line) override;
 	std::string getType() const override { return "BOW"; }
-
 private:
 	Vector2D<> velocity;
 
 	bool arrowArmad = false;
 	float timeSinceLastShot = 0.0f; // Tiempo transcurrido desde el último disparo
 	Arrow* arrow = nullptr; // Puntero a la flecha asociada al arco
+
+	void shootArrow();
 
 };
 #endif // BOW_H

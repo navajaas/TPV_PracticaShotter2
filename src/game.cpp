@@ -73,23 +73,13 @@ Game::Game()
 			delete t;
 		}
 
-		for (SceneObject* o : objects) {
-			delete o;
-		}
-
-		delete infoBar;
-
-		SDL_DestroyRenderer(renderer);
-		SDL_DestroyWindow(window);
-		SDL_Quit();
-
 		throw; // relanza la excepción
 	}
 
 	// Configura que se pueden utilizar capas translúcidas
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 
-	//infoBar = new InfoBar(Rectangle(Point2D<>(50, 30), 60, 15), _arrows, getTexture(ARROW));
+	infoBar = new InfoBar(this, Rectangle(Point2D<>(50, 30), 60, 15), _arrows, getTexture(ARROW));
 
 	loadMap(LEVEL_ROOT + std::string("1.txt"));
 	
@@ -121,7 +111,8 @@ Game::render() const
 		o->render();
 	}
 
-	//infoBar->render();
+	infoBar->render();
+
 	SDL_RenderPresent(renderer);
 }
 
@@ -156,19 +147,29 @@ void Game::update(float delta)
 	processCallbacks();
 }
 
-void
-Game::run()
+void Game::run()
 {
-	Uint64 lastTime = SDL_GetTicks();
-	while (!exit&& !gameLost) {
-		Uint64 currentTime = SDL_GetTicks();
-		float delta = (currentTime - lastTime) / 1000.0f; 
-		lastTime = currentTime;
+	const Uint64 frameTime = 16; // 16 ms ≈ 60 FPS
 
-		render();
+	Uint64 lastTime = SDL_GetTicks();
+
+	while (!exit && !gameLost) {
+
+		Uint64 frameStart = SDL_GetTicks();
+
+		float delta = (frameStart - lastTime) / 1000.0f;
+		lastTime = frameStart;
+
 		handleEvents();
 		update(delta);
-		SDL_Delay(16); 
+		render();
+
+		Uint64 frameEnd = SDL_GetTicks();
+		Uint64 elapsed = frameEnd - frameStart;
+
+		if (elapsed < frameTime) {
+			SDL_Delay(frameTime - elapsed);
+		}
 	}
 }
 
@@ -580,6 +581,7 @@ void Game::changeLevel() {
 
 void Game::updateArrows() {
 	_arrows--;
+	if (_arrows < 0) gameLost = true;
 }
 
 void Game::addCallback(std::function<void()> callback)

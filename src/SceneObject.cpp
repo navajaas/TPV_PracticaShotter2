@@ -1,5 +1,5 @@
 #include "SceneObject.h"
-#include "Texture.h"
+#include "texture.h"
 #include <stdexcept>
 #include "GameError.h"
 
@@ -8,9 +8,6 @@ SceneObject::SceneObject(Game* g, Rectangle r, Texture* tex)
 {
 }
 
-SceneObject::~SceneObject()
-{
-}
 
 void SceneObject::save(std::ostream& os) const
 {
@@ -24,7 +21,7 @@ void SceneObject::save(std::ostream& os) const
         << pos.getY() << ' ';
 
     if (!os)
-        throw std::runtime_error("Error al guardar SceneObject");
+        throw GameError("Error al guardar SceneObject");
 }
 
 void SceneObject::load(std::istream& is,int line)

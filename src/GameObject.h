@@ -1,10 +1,9 @@
-#ifndef GAMEOJECT_H
-#define GAMEOBJECT_J
+#ifndef GAMEOBJECT_H
+#define GAMEOBJECT_H
 
 #include <SDL3/SDL.h>
 
 class Game;
-
 
 class GameObject
 {
@@ -12,7 +11,6 @@ protected:
 	Game* game;
 public:
 	GameObject(Game* g);
-	~GameObject();
 
 	virtual void render() const = 0;
 	virtual bool update(float delta) = 0;

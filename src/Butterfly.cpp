@@ -2,11 +2,11 @@
 #include "GameError.h"
 #include <cmath>
 
-static constexpr int BUTTERFLY_ANIMATION_ROWS = 4;
-static constexpr int BUTTERFLY_ANIMATION_COLUMNS = 10;
-static constexpr int BUTTERFLY_TOTAL_FRAMES = 36;
-static constexpr float BUTTERFLY_FRAME_DURATION = 0.12f;
-static constexpr float FALL_SPEED = 200.0f;
+constexpr int BUTTERFLY_ANIMATION_ROWS = 4;
+constexpr int BUTTERFLY_ANIMATION_COLUMNS = 10;
+constexpr int BUTTERFLY_TOTAL_FRAMES = 36;
+constexpr float BUTTERFLY_FRAME_DURATION = 0.12f;
+constexpr float FALL_SPEED = 200.0f;
 
 constexpr float BUTTERFLY_WIDTH = 64.0f;
 constexpr float BUTTERFLY_HEIGHT = 44.0f;

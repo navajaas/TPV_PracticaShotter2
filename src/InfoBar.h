@@ -2,13 +2,14 @@
 #include "rectangle.h"
 #include "game.h"
 #include "texture.h"
+#include "GameObject.h"
 
 class Game;
 
-class InfoBar {
+class InfoBar : public GameObject {
 public: 
-	InfoBar(Rectangle rect, int arrowsLeft, Texture* textura) :
-		rect(rect),arrowsLeft(arrowsLeft), textura (textura)
+	InfoBar(Game* game, Rectangle rect, int arrowsLeft, Texture* textura) :
+		rect(rect),arrowsLeft(arrowsLeft), textura (textura), GameObject(game)
 	{
 
 	}
@@ -35,6 +36,9 @@ public:
 	}
 	void updateArrows(int arrows) {
 		arrowsLeft = arrows;
+	}
+	bool update(float delta) override {
+		return true;
 	}
 private:
 	Rectangle rect;

@@ -18,7 +18,6 @@ protected:
 
 public:
 	SceneObject(Game* g,Rectangle r, Texture* tex);
-	~SceneObject();
 
 	virtual bool hit(const Rectangle&) = 0;
 
