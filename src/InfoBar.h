@@ -3,13 +3,12 @@
 #include "game.h"
 #include "texture.h"
 #include "GameObject.h"
-
-class Game;
+#include "PlayState.h"
 
 class InfoBar : public GameObject {
 public: 
-	InfoBar(Game* game, Rectangle rect, int arrowsLeft, Texture* textura) :
-		rect(rect),arrowsLeft(arrowsLeft), textura (textura), GameObject(game)
+	InfoBar(PlayState* game, Rectangle rect, int arrowsLeft, Texture* textura) :
+		GameObject(game), rect(rect),arrowsLeft(arrowsLeft), textura (textura)
 	{
 
 	}

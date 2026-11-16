@@ -1,6 +1,6 @@
 #include "GameObject.h"
 
-GameObject::GameObject(Game* g)
+GameObject::GameObject(GameState* g)
 	: game(g)
 {
 }

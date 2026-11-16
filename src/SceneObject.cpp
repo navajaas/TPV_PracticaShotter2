@@ -2,9 +2,11 @@
 #include "texture.h"
 #include <stdexcept>
 #include "GameError.h"
+#include "GameState.h"
+#include "PlayState.h"
 
-SceneObject::SceneObject(Game* g, Rectangle r, Texture* tex)
-    : GameObject(g), rect(r), texture(tex), pos({ 0, 0 })
+SceneObject::SceneObject(PlayState* g, Rectangle r, Texture* tex)
+    : GameObject(g), game(g), rect(r), texture(tex), pos({ 0, 0 })
 {
 }
 

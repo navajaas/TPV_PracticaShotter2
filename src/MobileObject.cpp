@@ -2,7 +2,7 @@
 #include <stdexcept>
 #include "GameError.h"
 
-MobileObject::MobileObject(Game* g, Rectangle r, Texture* tex, Vector2D<float> s)
+MobileObject::MobileObject(PlayState* g, Rectangle r, Texture* tex, Vector2D<float> s)
 	: SceneObject(g,r,tex), speed(s)
 {
 }

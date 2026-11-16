@@ -1,5 +1,7 @@
 #include "Butterfly.h"
+#include "game.h"
 #include "GameError.h"
+#include "PlayState.h"
 #include <cmath>
 
 constexpr int BUTTERFLY_ANIMATION_ROWS = 4;
@@ -12,7 +14,7 @@ constexpr float BUTTERFLY_WIDTH = 64.0f;
 constexpr float BUTTERFLY_HEIGHT = 44.0f;
 
 
-Butterfly::Butterfly(Game* game,Rectangle rect, Texture* tex, Vector2D<float> dirSpeed):
+Butterfly::Butterfly(PlayState* game,Rectangle rect, Texture* tex, Vector2D<float> dirSpeed):
 	MobileObject(game, rect, tex, dirSpeed)
 {
 
@@ -45,7 +47,7 @@ bool Butterfly::update(float delta)
         rect.move(Vector2D<>(speed * delta));
 
         // Eliminar cuando salga por la parte inferior
-        if (rect.getTopLeftCorner().getY() > game->WINDOW_HEIGHT)
+        if (rect.getTopLeftCorner().getY() > Game::WINDOW_HEIGHT)
             return false;
 
         return true;
@@ -81,7 +83,7 @@ bool Butterfly::update(float delta)
             speed.setX(randomSpeedX);
         }
 
-        if (rect.getTopLeftCorner().getX() > game->WINDOW_WIDTH - BUTTERFLY_WIDTH)
+        if (rect.getTopLeftCorner().getX() > Game::WINDOW_WIDTH - BUTTERFLY_WIDTH)
         {
             randomSpeedX =
                 std::uniform_real_distribution<float>(50.0f, 150.0f)(randomGenerator);
@@ -97,7 +99,7 @@ bool Butterfly::update(float delta)
             speed.setY(randomSpeedY);
         }
 
-        if (rect.getTopLeftCorner().getY() > game->WINDOW_HEIGHT - BUTTERFLY_HEIGHT)
+        if (rect.getTopLeftCorner().getY() > Game::WINDOW_HEIGHT - BUTTERFLY_HEIGHT)
         {
             randomSpeedY =
                 std::uniform_real_distribution<float>(50.0f, 150.0f)(randomGenerator);

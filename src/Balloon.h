@@ -6,12 +6,12 @@
 #include "texture.h"
 #include "MobileObject.h"
 
-class Game;
+class PlayState;
 
 class Balloon : public MobileObject
 {
 public:
-	Balloon(Game*,Rectangle, Texture*, Vector2D<float>, int);
+	Balloon(PlayState*,Rectangle, Texture*, Vector2D<float>, int);
 	
 	void render() const override;
 	bool update(float delta) override;

@@ -7,17 +7,18 @@
 #include "texture.h"
 #include "MobileObject.h"
 
-class Game;
+class PlayState;
 
 class Arrow : public MobileObject
 {
 public:
-	Arrow(Game* game, Rectangle rect, Texture* textura);
+	Arrow(PlayState* game, Rectangle rect, Texture* textura);
 	
 	void render() const override;
 	bool update(float delta) override;
 	bool hit(const Rectangle&) override { return false; }
 	std::string getType() const override { return "ARROW"; }
+
 private:
 	Rectangle rectColision;
 	int balloonHitCount = 0; // Contador de globos alcanzados por la flecha

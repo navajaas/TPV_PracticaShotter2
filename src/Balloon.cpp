@@ -2,12 +2,13 @@
 #include "game.h"
 #include <iostream>
 #include "GameError.h"
+#include "PlayState.h"
 
 constexpr float FRAME_DURATION = 0.08f;
 constexpr int EXPLOSION_FRAMES = 6;
 
 
-Balloon::Balloon(Game* game, Rectangle rect, Texture* tex, Vector2D<float> speed, int color)
+Balloon::Balloon(PlayState* game, Rectangle rect, Texture* tex, Vector2D<float> speed, int color)
 	: MobileObject(game,rect,tex,speed), color(color)
 {
 }

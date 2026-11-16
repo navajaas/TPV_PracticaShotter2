@@ -7,14 +7,15 @@
 #include "texture.h"
 #include "Arrow.h"
 #include "SceneObject.h"
+#include "EventHandler.h"
 
-class Game;
+class PlayState;
 class Arrow;
 
-class Bow : public SceneObject
+class Bow : public SceneObject, public EventHandler
 {
 public:
-	Bow(Game* game, Rectangle rect, Texture* textura);
+	Bow(PlayState* game, Rectangle rect, Texture* textura);
 	
 	void render() const override;
 	bool update(float delta) override;

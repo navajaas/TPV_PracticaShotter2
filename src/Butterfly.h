@@ -1,14 +1,19 @@
-#pragma once
+#ifndef BUTTERFLY_H
+#define BUTTERFLY_H
+
 #include "vector2D.h"
 #include "rectangle.h"
-#include "game.h"
+#include <random>
+#include "GameState.h"
 #include "texture.h"
 #include "MobileObject.h"
+
+class PlayState;
 
 class Butterfly: public MobileObject
 {
 public:
-	Butterfly(Game*, Rectangle, Texture*, Vector2D<float>);
+	Butterfly(PlayState*, Rectangle, Texture*, Vector2D<float>);
 
 	void render() const override;
 	bool update(float) override;
@@ -33,3 +38,4 @@ private:
 	int getDirectionRow() const;
 };
 
+#endif // BUTTERFLY_H

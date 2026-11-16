@@ -7,21 +7,17 @@
 #include <string>
 #include <vector>
 #include "rectangle.h"
-#include <random>
 #include <functional>
+#include "gameStateMachine.h"
 
 // Declaraciones anticipadas
 class Texture;
-class Bow;
-class Balloon;
-class Butterfly;
-class InfoBar;
-class SceneObject;
+
 
 /**
  * Clase principal del juego.
  */
-class Game
+class Game : public GameStateMachine
 {
 	using callback = std::function<void()>;
 public:
@@ -47,42 +43,10 @@ private:
 	SDL_Window* window;
 	SDL_Renderer* renderer;
 	std::array<Texture*, NUM_TEXTURES> textures;
-	
-	// Sistema de niveles y puntuación
-	int currentLevel = 1;
-	int score = 0;
-	int targetScore = 10;  // Puntuación necesaria para pasar de nivel
-	int balloonPoints = 1;
-
-	bool gameWon = false;
-	bool gameLost = false;
-	bool checkLevelProgress();
-	void changeLevel();
-
-	void render() const;
-	void update(float delta);
-	void handleEvents();
 
 	bool exit;
-	void spawnBalloon();
-	void spawnButterflyes(int cantidad);
-
-	void saveGame() const;
-	void loadGame();
-
-	float spawnTimer = 0.0f; // Temporizador para el spawn de globos
-	float spawnInterval = 1.5; // Intervalo de tiempo entre spawns de
-	int _arrows;
-	std::mt19937_64 randomGenerator{ std::random_device{}() };
 	std::vector<callback> _callbacks;
 
-	// Elemento del juego
-	// TODO: añadir atributos para los objetos del juego
-	std::vector<SceneObject*> objects;
-	InfoBar* infoBar = nullptr;
-
-	int r, g, b;
-	int aliveButterflies = 0;
 
 public:
 	Game();
@@ -93,16 +57,14 @@ public:
 
 	// Ejecuta el bucle principal del juego
 	void run();
-	// Comprueba si hay algún objeto colocado en ese rectángulo
-	bool checkCollision(const Rectangle& rect);
-	void loadMap(const std::string& file);
-	void addScore(int points, int numBallons=1);
-	void addObject(SceneObject*);
-	void updateArrows();
 
+	void handleEvents();
 	void addCallback(callback callback);
 	void processCallbacks();
-	void onButterflyKilled();
+
+	SDL_Window* getWindow() const { return window; }
+	SDL_Renderer* getRenderer() const { return renderer; }
+
 };
 
 inline Texture*

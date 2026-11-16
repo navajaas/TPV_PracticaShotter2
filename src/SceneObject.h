@@ -8,6 +8,7 @@
 #include <string>
 
 class Texture;
+class PlayState;
 
 class SceneObject : public GameObject
 {
@@ -15,15 +16,18 @@ protected:
 	Rectangle rect;
 	Texture* texture;
 	Point2D<float> pos;
+	PlayState* game;
 
 public:
-	SceneObject(Game* g,Rectangle r, Texture* tex);
+	SceneObject(PlayState* g,Rectangle r, Texture* tex);
 
 	virtual bool hit(const Rectangle&) = 0;
 
 	virtual void save(std::ostream& os) const;
 	virtual void load(std::istream& is,int line);
 	virtual std::string getType() const = 0;
+
+	PlayState* getState() const { return game; }
 };
 
 #endif //SCENEOBJECT_H

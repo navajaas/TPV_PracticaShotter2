@@ -1,8 +1,9 @@
 #include "Arrow.h"
+#include "PlayState.h"
 
 constexpr float ARROW_SPEED = 300.0f;
 
-Arrow::Arrow(Game* game, Rectangle rect, Texture* textura)
+Arrow::Arrow(PlayState* game, Rectangle rect, Texture* textura)
 	: MobileObject(game, rect, textura, { ARROW_SPEED , 0 })
 {
 }
@@ -16,7 +17,7 @@ void Arrow::render() const
 
 bool Arrow::update(float delta) {
 
-	if (rect.getTopLeftCorner().getX() > game->WINDOW_WIDTH)
+	if (rect.getTopLeftCorner().getX() > Game::WINDOW_WIDTH)
 		return false;
 
 	// Actualiza la posición de la flecha

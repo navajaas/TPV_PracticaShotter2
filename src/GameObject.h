@@ -3,14 +3,14 @@
 
 #include <SDL3/SDL.h>
 
-class Game;
+class GameState;
 
 class GameObject
 {
 protected:
-	Game* game;
+	GameState* game;
 public:
-	GameObject(Game* g);
+	GameObject(GameState* g);
 
 	virtual void render() const = 0;
 	virtual bool update(float delta) = 0;

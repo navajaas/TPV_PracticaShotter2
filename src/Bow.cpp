@@ -2,11 +2,13 @@
 #include "Arrow.h"
 #include "MobileObject.h"
 #include "GameError.h"
+#include "GameState.h"
+#include "PlayState.h"
 
 constexpr float BOW_SPEED = 200.0f; // Velocidad de movimiento del arco
 constexpr float SHOOT_CD = 0.2f; // Tiempo de espera entre disparos
 
-Bow::Bow(Game* game, Rectangle rect, Texture* tex)
+Bow::Bow(PlayState* game, Rectangle rect, Texture* tex)
 	: SceneObject(game,rect,tex), arrowArmad(false), timeSinceLastShot(0.0f)
 {
 }
@@ -62,7 +64,7 @@ bool Bow::update(float delta) {
 		float nextY = rect.getTopLeftCorner().getY() + velocity.getY() * BOW_SPEED * delta;
 
 		float minY = 0.0f;
-		float maxY = game->WINDOW_HEIGHT - rect.getHeight();
+		float maxY = Game::WINDOW_HEIGHT - rect.getHeight();
 
 		if (nextY >= minY && nextY <= maxY) {
 			rect.move(Vector2D(0.0f, velocity.getY() * BOW_SPEED * delta));
@@ -74,7 +76,7 @@ bool Bow::update(float delta) {
 void Bow::shootArrow() {
 	if (arrowArmad) {
 		Point2D<> arrowPosition(rect.getTopLeftCorner().getX() + rect.getWidth(), rect.getTopLeftCorner().getY() + rect.getHeight() / 2-10);
-		arrow = new Arrow(game, Rectangle(arrowPosition, 60, 15), game->getTexture(Game::ARROW)); 
+		arrow = new Arrow(game, Rectangle(arrowPosition, 60, 15), game->getGame()->getTexture(Game::ARROW)); 
 		arrowArmad = false; // Resetear el estado del arco
 		game->updateArrows();
 		game->addObject(arrow); // Agregar la flecha al juego
