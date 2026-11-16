@@ -27,12 +27,12 @@ void SceneObject::save(std::ostream& os) const
         throw std::runtime_error("Error al guardar SceneObject");
 }
 
-void SceneObject::load(std::istream& is)
+void SceneObject::load(std::istream& is,int line)
 {
     float x, y, width, height, posX, posY;
 
     if (!(is >> x >> y >> width >> height >> posX >> posY))
-		throw FileFormatError("saved.txt", 0, "Error al leer SceneObject");
+		throw FileFormatError("saved.txt", line, "Error al leer SceneObject");
 
     if (width <= 0 || height <= 0)
         throw FileFormatError("saved.txt",0,"Dimensiones incorrectas.");

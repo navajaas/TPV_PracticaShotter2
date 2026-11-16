@@ -23,7 +23,7 @@ public:
 	virtual bool hit(const Rectangle&) = 0;
 
 	virtual void save(std::ostream& os) const;
-	virtual void load(std::istream& is);
+	virtual void load(std::istream& is,int line);
 	virtual std::string getType() const = 0;
 };
 

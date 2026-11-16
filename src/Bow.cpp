@@ -94,9 +94,9 @@ void Bow::save(std::ostream& os) const
 		throw GameError("Error al guardar Bow");
 }
 
-void Bow::load(std::istream& is)
+void Bow::load(std::istream& is, int line)
 {
-	SceneObject::load(is);
+	SceneObject::load(is, line);
 
 	float velocityX, velocityY;
 
@@ -106,7 +106,7 @@ void Bow::load(std::istream& is)
 		>> timeSinceLastShot))
 	{
 		throw FileFormatError(
-			"saved.txt", 0,
+			"saved.txt", line,
 			"Error al leer los datos de Bow"
 		);
 	}
@@ -114,7 +114,7 @@ void Bow::load(std::istream& is)
 	if (timeSinceLastShot < 0)
 	{
 		throw FileFormatError(
-			"saved.txt", 0,
+			"saved.txt", line,
 			"Tiempo de espera entre disparos negativo en Bow"
 		);
 	}

@@ -49,12 +49,12 @@ Game::Game()
 {
 	// Carga SDL y crea la ventana con su renderizador
 	if (!SDL_Init(SDL_INIT_VIDEO))
-		throw "SDL_Init: "s + SDL_GetError();
+		throw SDLError();
 
 	if (!SDL_CreateWindowAndRenderer(WINDOW_TITLE,
 	                                 WINDOW_WIDTH, WINDOW_HEIGHT,
 	                                 0, &window, &renderer))
-		throw "window or renderer: "s + SDL_GetError();
+		throw SDLError();
 
 	// Carga las texturas al inicio
 	try {
@@ -362,7 +362,7 @@ void Game::saveGame() const
 	std::ofstream file("saved.txt");
 
 	if (!file)
-		throw std::string("No se pudo abrir saved.txt");
+		throw FileNotFoundError("saved.txt");
 
 	file << "GAME 1\n";
 
@@ -468,7 +468,7 @@ void Game::loadGame()
 
 			try
 			{
-				obj->load(file);
+				obj->load(file,lineNumber);
 				loadedObjects.push_back(obj);
 			}
 			catch (...)
@@ -497,8 +497,9 @@ void Game::loadGame()
 	}
 
 
-	for (SceneObject* obj : objects)
+	for (SceneObject* obj : objects) {
 		delete obj;
+	}
 
 	objects.clear();
 	objects = std::move(loadedObjects);

@@ -6,6 +6,7 @@
 //
 
 #include "game.h"
+#include "GameError.h"
 
 int main(int argc, char* argv[])
 {
@@ -13,9 +14,14 @@ int main(int argc, char* argv[])
         Game game;
         game.run();
     }
-    catch (const std::string& error) {
-        std::cerr << error << '\n';
+    catch (const GameError& e) {
+        SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", e.what(), nullptr);
         return 1;
     }
-	return 0;
+    catch (const std::exception& e) {
+        SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error inesperado", e.what(), nullptr);
+        return 1;
+    }
+
+    return 0;
 }

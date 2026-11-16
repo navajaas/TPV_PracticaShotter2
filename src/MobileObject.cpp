@@ -25,14 +25,14 @@ void MobileObject::save(std::ostream& os) const
 		throw GameError("Error al guardar MobileObject");
 }
 
-void MobileObject::load(std::istream& is)
+void MobileObject::load(std::istream& is, int line)
 {
-    SceneObject::load(is);
+    SceneObject::load(is, line);
 
     float speedX, speedY;
 
     if (!(is >> speedX >> speedY))
-		throw FileFormatError("saved.txt", 0, "Error al leer MobileObject");
+		throw FileFormatError("saved.txt", line, "Error al leer MobileObject");
 
     speed = Vector2D<float>(speedX, speedY);
 }

@@ -25,7 +25,7 @@ public:
 	void shootArrow();
 
 	void save(std::ostream& os) const override;
-	void load(std::istream& is) override;
+	void load(std::istream& is, int line) override;
 	std::string getType() const override { return "BOW"; }
 
 private:

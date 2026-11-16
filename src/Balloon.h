@@ -21,7 +21,7 @@ public:
 	void setPoints(int p) { points = p; }
 
 	void save(std::ostream& os) const override;
-	void load(std::istream& is) override;
+	void load(std::istream& is, int line) override;
 	std::string getType() const override { return "BALLOON"; }
 
 private:

@@ -66,12 +66,12 @@ void Balloon::save(std::ostream& os) const
         << points << ' ';
 }
 
-void Balloon::load(std::istream& is)
+void Balloon::load(std::istream& is, int line)
 {
-    MobileObject::load(is);
+    MobileObject::load(is, line);
 
     if (!(is >> color >> exploding >> points))
-		throw FileFormatError("saved.txt", 0, "Error al leer Balloon");
+		throw FileFormatError("saved.txt", line, "Error al leer Balloon");
 
     explosionFrame = 0;
     animationTimer = 0.0f;

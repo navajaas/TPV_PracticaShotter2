@@ -148,12 +148,12 @@ void Butterfly::save(std::ostream& os) const
         << hitByArrow << ' ';
 }
 
-void Butterfly::load(std::istream& is)
+void Butterfly::load(std::istream& is, int line)
 {
-    MobileObject::load(is);
+    MobileObject::load(is, line);
 
     if (!(is >> randomSpeedY >> randomSpeedX >> hitByArrow))
-		throw FileFormatError("saved.txt", 0, "Error al leer Butterfly");
+		throw FileFormatError("saved.txt", line, "Error al leer Butterfly");
 
     currentFrame = 0;
     animationTimer = 0.0f;

@@ -13,7 +13,7 @@ public:
 
 	bool update(float delta) override;
 	void save(std::ostream& os) const override;
-	void load(std::istream& is) override;
+	void load(std::istream& is, int line) override;
 };
 
 #endif //MOBILEOBJECT_H
