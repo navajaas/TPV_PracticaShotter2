@@ -15,6 +15,9 @@
 #include "Butterfly.h"
 #include "GameError.h"
 #include "PlayState.h"
+#include "MainMenuState.h"
+#include "PauseState.h"
+#include "EndState.h"
 
 using namespace std;
 
@@ -37,7 +40,8 @@ constexpr array<TextureSpec, Game::NUM_TEXTURES> textureList{
 	{"arrow.png"},
 	{"balloons.png",7,6},
 	{"background1.png"},
-	{"butterfly.png",4,10}
+	{"butterfly.png",4,10},
+	{"menuBackground.png"}
 };
 
 
@@ -75,7 +79,8 @@ Game::Game()
 	// Configura que se pueden utilizar capas translúcidas
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 
-	pushState(std::make_shared<PlayState>(this));
+	pushState(std::make_shared<MainMenuState>(this));
+	
 }
 
 Game::~Game()
@@ -115,6 +120,17 @@ void Game::run()
 		}
 	}
 }
+
+void Game::render() const
+{
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+	SDL_RenderClear(renderer);
+
+	GameStateMachine::render();
+
+	SDL_RenderPresent(renderer);
+}
+
 void Game::handleEvents()
 {
 	SDL_Event event;

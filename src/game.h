@@ -13,7 +13,6 @@
 // Declaraciones anticipadas
 class Texture;
 
-
 /**
  * Clase principal del juego.
  */
@@ -36,6 +35,7 @@ public:
 		BALLOON,
 		BACKGROUND,
 		MARIPOSA,
+		MAINMENU_BACKGROUND,
 		NUM_TEXTURES
 	};
 
@@ -57,6 +57,7 @@ public:
 
 	// Ejecuta el bucle principal del juego
 	void run();
+	void render() const override;
 
 	void handleEvents();
 	void addCallback(callback callback);

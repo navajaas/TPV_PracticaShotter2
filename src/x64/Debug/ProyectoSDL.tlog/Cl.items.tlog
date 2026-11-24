@@ -2,6 +2,7 @@ C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\Arrow.cpp;C:\Users\Isa\Do
 C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\Balloon.cpp;C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\x64\Debug\Balloon.obj
 C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\Bow.cpp;C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\x64\Debug\Bow.obj
 C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\Butterfly.cpp;C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\x64\Debug\Butterfly.obj
+C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\EndState.cpp;C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\x64\Debug\EndState.obj
 C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\EventHandler.cpp;C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\x64\Debug\EventHandler.obj
 C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\fileDialog.cpp;C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\x64\Debug\fileDialog.obj
 C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\game.cpp;C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\x64\Debug\game.obj
@@ -10,7 +11,9 @@ C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\GameObject.cpp;C:\Users\I
 C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\GameState.cpp;C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\x64\Debug\GameState.obj
 C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\gameStateMachine.cpp;C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\x64\Debug\gameStateMachine.obj
 C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\main.cpp;C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\x64\Debug\main.obj
+C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\MainMenuState.cpp;C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\x64\Debug\MainMenuState.obj
 C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\MobileObject.cpp;C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\x64\Debug\MobileObject.obj
+C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\PauseState.cpp;C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\x64\Debug\PauseState.obj
 C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\PlayState.cpp;C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\x64\Debug\PlayState.obj
 C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\rectangle.cpp;C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\x64\Debug\rectangle.obj
 C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\SceneObject.cpp;C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\x64\Debug\SceneObject.obj

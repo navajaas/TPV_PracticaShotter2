@@ -39,7 +39,7 @@ public:
 	// Métodos que delegan en los métodos homónimos de GameState
 	// sobre el estado actual (no hacen nada si la pila es vacía)
 	void update(float delta);
-	void render() const;
+	virtual void render() const;
 	void handleEvent(const SDL_Event& event);
 };
 

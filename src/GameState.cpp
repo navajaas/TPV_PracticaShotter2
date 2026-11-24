@@ -1,5 +1,6 @@
 #include "GameState.h"
 #include "GameObject.h"
+#include "game.h"
 
 GameState::~GameState()
 {
@@ -13,6 +14,7 @@ void GameState::render() const
 	for (const GameObject* obj : gameObjects) {
 		obj->render();
 	}
+
 }
 
 void GameState::update(float delta)
