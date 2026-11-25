@@ -42,7 +42,7 @@ private:
 	bool checkLevelProgress();
 	void changeLevel();
 
-	void handleEvents();
+	void handleEvent(const SDL_Event& event) override;
 
 	void spawnBalloon();
 	void spawnButterflyes(int cantidad);

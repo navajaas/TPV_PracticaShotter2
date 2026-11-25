@@ -7,6 +7,7 @@
 #include "Butterfly.h"
 #include "game.h"
 #include "GameError.h"
+#include "PauseState.h"
 #include <fstream>
 #include <sstream>
 
@@ -58,7 +59,7 @@ void PlayState::update(float delta)
 			++it;
 		}
 	}
-
+	
 	game->processCallbacks();
 }
 
@@ -469,4 +470,12 @@ void PlayState::spawnBalloon()
 	b->setPoints(balloonPoints);
 
 
+}
+void PlayState::handleEvent(const SDL_Event& event)
+{
+	if (event.type == SDL_EVENT_KEY_DOWN) {
+		if (event.key.key == SDLK_ESCAPE) {
+			game->replaceState(new PauseState(game));
+		}
+	}
 }

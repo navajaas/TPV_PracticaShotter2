@@ -11,6 +11,7 @@ constexpr float SHOOT_CD = 0.2f; // Tiempo de espera entre disparos
 Bow::Bow(PlayState* game, Rectangle rect, Texture* tex)
 	: SceneObject(game,rect,tex), arrowArmad(false), timeSinceLastShot(0.0f)
 {
+	game->addEventHandler(this);
 }
 
 void Bow::render() const

@@ -44,6 +44,11 @@ constexpr array<TextureSpec, Game::NUM_TEXTURES> textureList{
 	{"menuBackground.png"},
 	{"texts/nuevaPartida.png"},
 	{"texts/cargarPartida.png"},
+	{"texts/guardarPartida.png"},
+	{"texts/continuar.png"},
+	{"texts/volverAlMenu.png"},
+	{"texts/nivel.png"},
+	{"texts/puntuacion.png"},
 	{"texts/salir.png"}
 };
 
