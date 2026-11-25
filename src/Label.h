@@ -2,16 +2,18 @@
 #define LABEL_H
 
 #include "vector2D.h"
+#include "GameObject.h"
 
 class Texture;
+class GameState;
 
-class Label
+class Label : public GameObject
 {
 protected:
 	Texture* texture;
 	Point2D<float> position;
 public:
-	Label(Texture* tex, Point2D<float> pos);
+	Label(GameState* state, Texture* tex, Point2D<float> pos);
 	virtual void render() const;
 };
 

@@ -9,6 +9,7 @@
 #include "rectangle.h"
 #include <functional>
 #include "gameStateMachine.h"
+#include "Button.h"
 
 // Declaraciones anticipadas
 class Texture;
@@ -36,6 +37,9 @@ public:
 		BACKGROUND,
 		MARIPOSA,
 		MAINMENU_BACKGROUND,
+		NUEVA_PARTIDA,
+		CARGAR_PARTIDA,
+		SALIR,
 		NUM_TEXTURES
 	};
 
@@ -63,8 +67,9 @@ public:
 	void addCallback(callback callback);
 	void processCallbacks();
 
-	SDL_Window* getWindow() const { return window; }
-	SDL_Renderer* getRenderer() const { return renderer; }
+	SDL_Window* getWindow() const;
+	SDL_Renderer* getRenderer();
+
 
 };
 
@@ -73,5 +78,19 @@ Game::getTexture(TextureName name) const
 {
 	return textures[name];
 }
+
+inline SDL_Renderer*
+Game::getRenderer()
+{
+	return renderer;
+}
+
+inline SDL_Window*
+Game::getWindow() const
+{
+	return window;
+}
+
+
 
 #endif // GAME_H

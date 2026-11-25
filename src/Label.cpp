@@ -1,11 +1,13 @@
 #include "Label.h"
 #include "Texture.h"
 
-Label::Label(Texture* tex, Point2D<float> pos)
-	: texture(tex),position(pos)
+Label::Label(GameState* state, Texture* tex, Point2D<float> pos)
+	: GameObject(state), texture(tex),position(pos)
 {
 }
 
 void Label::render() const {
-	texture->render();
+	if (texture) {
+		texture->render();
+	}
 }

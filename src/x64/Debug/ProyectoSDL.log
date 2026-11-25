@@ -1,26 +1,10 @@
-﻿  Arrow.cpp
-  Balloon.cpp
-  Bow.cpp
-  Butterfly.cpp
-  GameState.cpp
-  MainMenuState.cpp
-  PlayState.cpp
-  fileDialog.cpp
-  game.cpp
-  gameStateMachine.cpp
-  main.cpp
-C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\fileDialog.cpp(33,37): warning C4267: 'argumento': conversión de 'size_t' a 'int'; posible pérdida de datos
-C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\fileDialog.cpp(47,37): warning C4267: 'argumento': conversión de 'size_t' a 'int'; posible pérdida de datos
-C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\InfoBar.h(19,19): warning C4244: 'inicializando': conversión de 'Rectangle::scalar_t' a 'int'; posible pérdida de datos
-  (compilando archivo de origen "game.cpp")
-  
-C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\PlayState.cpp(145,29): warning C4551: la llamada a la función no tiene lista de argumentos
-C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\PlayState.cpp(321,12): warning C4244: 'inicializando': conversión de 'float' a 'int'; posible pérdida de datos
-C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\PlayState.cpp(324,12): warning C4244: 'inicializando': conversión de 'float' a 'int'; posible pérdida de datos
-C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\game.cpp(119,24): warning C4244: 'argumento': conversión de 'Uint64' a 'Uint32'; posible pérdida de datos
-C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\PlayState.cpp(329,17): warning C4244: 'inicializando': conversión de 'int' a 'float'; posible pérdida de datos
-C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\PlayState.cpp(330,17): warning C4244: 'inicializando': conversión de 'int' a 'float'; posible pérdida de datos
-C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\PlayState.cpp(457,11): warning C4244: 'inicializando': conversión de 'float' a 'int'; posible pérdida de datos
-C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\PlayState.cpp(460,16): warning C4244: 'inicializando': conversión de 'int' a 'float'; posible pérdida de datos
-C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\PlayState.cpp(141,1): warning C4715: 'PlayState::checkLevelProgress': no todas las rutas de acceso de control devuelven un valor
+﻿  PlayState.cpp
+C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\PlayState.cpp(143,29): warning C4551: la llamada a la función no tiene lista de argumentos
+C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\PlayState.cpp(319,12): warning C4244: 'inicializando': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\PlayState.cpp(322,12): warning C4244: 'inicializando': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\PlayState.cpp(327,17): warning C4244: 'inicializando': conversión de 'int' a 'float'; posible pérdida de datos
+C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\PlayState.cpp(328,17): warning C4244: 'inicializando': conversión de 'int' a 'float'; posible pérdida de datos
+C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\PlayState.cpp(455,11): warning C4244: 'inicializando': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\PlayState.cpp(458,16): warning C4244: 'inicializando': conversión de 'int' a 'float'; posible pérdida de datos
+C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\src\PlayState.cpp(139,1): warning C4715: 'PlayState::checkLevelProgress': no todas las rutas de acceso de control devuelven un valor
   ProyectoSDL.vcxproj -> C:\Users\Isa\Documents\GitHub\TPV_PracticaShotter2\bin\ProyectoSDLDebug.exe

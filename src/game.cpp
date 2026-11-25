@@ -41,7 +41,10 @@ constexpr array<TextureSpec, Game::NUM_TEXTURES> textureList{
 	{"balloons.png",7,6},
 	{"background1.png"},
 	{"butterfly.png",4,10},
-	{"menuBackground.png"}
+	{"menuBackground.png"},
+	{"texts/nuevaPartida.png"},
+	{"texts/cargarPartida.png"},
+	{"texts/salir.png"}
 };
 
 

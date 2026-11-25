@@ -26,6 +26,7 @@ PlayState::~PlayState()
 	for (SceneObject* o : sceneObjects) {
 		delete o;
 	}
+	GameState::~GameState();
 }
 
 void PlayState::update(float delta)
@@ -64,7 +65,6 @@ void PlayState::update(float delta)
 void PlayState::render() const
 {
 
-	SDL_RenderClear(game->getRenderer());
 
 	SDL_SetRenderDrawColor(game->getRenderer(), r, g, b, 255);
 	
@@ -75,8 +75,6 @@ void PlayState::render() const
 	}
 
 	//infoBar->render();
-
-	SDL_RenderPresent(game->getRenderer());
 
 }
 
