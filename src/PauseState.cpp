@@ -6,8 +6,8 @@
 #include "PlayState.h"
 #include <iostream>
 
-PauseState::PauseState(Game* game)
-	: GameState(game)
+PauseState::PauseState(Game* game, PlayState* playState)
+	: GameState(game), playstate(playState)
 {
 	std:: cout << "Pausa" << std::endl;
 	Button* resumeButton = new Button(this, game->getTexture(Game::REANUDAR), Point2D<float>(250, 200));
@@ -16,8 +16,12 @@ PauseState::PauseState(Game* game)
 	Button* mainMenuButton = new Button(this, game->getTexture(Game::VOLVER_AL_MENU), Point2D<float>(250, 440));
 
 	resumeButton->connect([game]() { game->popState(); });
+	saveButton->connect([this]() { playstate->saveGame(); });
+	//cargarButton->connect([this]() { playstate->loadMap(); });
 	mainMenuButton->connect([game]() { game->replaceState(new MainMenuState(game)); });
 	
+
+
 	addGameObject(resumeButton);
 	addGameObject(saveButton);
 	addGameObject(cargarButton);
@@ -29,3 +33,4 @@ void PauseState::render() const
 	game->getTexture(Game::MAINMENU_BACKGROUND)->render();
 	GameState::render();
 }
+

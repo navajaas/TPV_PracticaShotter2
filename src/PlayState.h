@@ -47,8 +47,7 @@ private:
 	void spawnBalloon();
 	void spawnButterflyes(int cantidad);
 
-	void saveGame() const;
-	void loadGame();
+
 
 public:
 	PlayState(Game*);
@@ -66,6 +65,8 @@ public:
 	void updateArrows();
 	void onButterflyKilled();
 
+	void saveGame() const;
+	void loadGame();
 };
 
 #endif // PLAYSTATE_H

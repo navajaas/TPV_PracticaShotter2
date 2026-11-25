@@ -309,6 +309,7 @@ void PlayState::saveGame() const
 		obj->save(file);
 		file << '\n';
 	}
+	std::cout << "Partida guardada" << std::endl;
 }
 
 
@@ -477,7 +478,7 @@ void PlayState::handleEvent(const SDL_Event& event)
 	GameState::handleEvent(event);
 	if (event.type == SDL_EVENT_KEY_DOWN) {
 		if (event.key.key == SDLK_ESCAPE) {
-			game->pushState(new PauseState(game));
+			game->pushState(new PauseState(game, this));
 		}
 	}
 }
