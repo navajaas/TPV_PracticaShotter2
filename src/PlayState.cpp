@@ -471,11 +471,13 @@ void PlayState::spawnBalloon()
 
 
 }
+
 void PlayState::handleEvent(const SDL_Event& event)
-{
+{ 
+	GameState::handleEvent(event);
 	if (event.type == SDL_EVENT_KEY_DOWN) {
 		if (event.key.key == SDLK_ESCAPE) {
-			game->replaceState(new PauseState(game));
+			game->pushState(new PauseState(game));
 		}
 	}
 }

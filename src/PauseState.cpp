@@ -15,6 +15,7 @@ PauseState::PauseState(Game* game)
 	Button* cargarButton = new Button(this, game->getTexture(Game::CARGAR_PARTIDA), Point2D<float>(250, 360));
 	Button* mainMenuButton = new Button(this, game->getTexture(Game::VOLVER_AL_MENU), Point2D<float>(250, 440));
 
+	resumeButton->connect([game]() { game->popState(); });
 	mainMenuButton->connect([game]() { game->replaceState(new MainMenuState(game)); });
 	
 	addGameObject(resumeButton);
